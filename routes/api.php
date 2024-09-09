@@ -21,6 +21,17 @@ use App\Http\Controllers\VisitController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogle']);
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
+Route::get('/auth/facebook', [AuthController::class, 'redirectToFacebook']);
+Route::get('/auth/facebook/callback', [AuthController::class, 'handleFacebookCallback']);
+
+Route::get('/auth/linkedin', [AuthController::class, 'redirectToLinkedIn']);
+Route::get('/auth/linkedin/callback', [AuthController::class, 'handleLinkedInCallback']);
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     

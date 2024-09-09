@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
+use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -48,5 +51,55 @@ public function logout(Request $request)
     return response()->json(['message' => 'Successfully logged out.'], 200);
 }
 
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        return $this->handleProviderCallback('google');
+    }
+
+    public function redirectToFacebook()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function handleFacebookCallback()
+    {
+        return $this->handleProviderCallback('facebook');
+    }
+
+    public function redirectToLinkedIn()
+    {
+        return Socialite::driver('linkedin')->redirect();
+    }
+
+    public function handleLinkedInCallback()
+    {
+        return $this->handleProviderCallback('linkedin');
+    }
+
+    protected function handleProviderCallback($provider)
+    {
+        $socialUser = Socialite::driver($provider)->user();
+        
+        $user = User::where('email', $socialUser->getEmail())->first();
+
+        if (!$user) {
+            $user = User::create([
+                'email' => $socialUser->getEmail(),
+                'username' => $socialUser->getName(),
+                'password' => bcrypt(Str::random(8)), // Use Str::random() instead
+            ]);
+        }
+
+        Auth::login($user, true);
+
+        $token = $user->createToken('YourAppName')->plainTextToken;
+
+        return response()->json(['user' => $user, 'token' => $token]);
+    }
 
 }
