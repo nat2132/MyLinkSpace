@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\VisitController;
+use App\Http\Controllers\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,8 @@ Route::get('/auth/facebook/callback', [AuthController::class, 'handleFacebookCal
 Route::get('/auth/linkedin', [AuthController::class, 'redirectToLinkedIn']);
 Route::get('/auth/linkedin/callback', [AuthController::class, 'handleLinkedInCallback']);
 
+Route::post('/password/email', [PasswordResetController::class, 'sendResetLink']);
+Route::post('/password/reset', [PasswordResetController::class, 'reset']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
