@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 
-use Illuminate\Support\Str;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -15,21 +16,24 @@ class AuthController extends Controller
     //
 
     public function register(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email|unique:users',
-        'username' => 'required|string|unique:users',
-        'password' => 'required|string|min:6',
-    ]);
-
-    $user = User::create([
-        'email' => $request->email,
-        'username' => $request->username,
-        'password' => Hash::make($request->password),
-    ]);
-
-    return response()->json($user, 201);
-}
+    {
+        $request->validate([
+            'email' => 'required|email|unique:users',
+            'username' => 'required|string|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+    
+        $user = User::create([
+            'email' => $request->email,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+        ]);
+    
+        // Dispatch the Registered event to send the verification email
+        event(new Registered($user));
+    
+        return response()->json($user, 201);
+    }
 
 public function login(Request $request)
 {

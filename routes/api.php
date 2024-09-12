@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\PasswordResetController;
+use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +37,9 @@ Route::post('/password/email', [PasswordResetController::class, 'sendResetLink']
 Route::post('/password/reset', [PasswordResetController::class, 'reset']);
 
 
-Route::middleware('auth:sanctum')->group(function () {
+Auth::routes(['verify' => true]);
+
+Route::middleware('auth:sanctum','verified')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     
     Route::apiResource('user/links', LinkController::class);
