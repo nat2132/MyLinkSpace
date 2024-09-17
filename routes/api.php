@@ -37,6 +37,8 @@ Route::prefix('users/{userId}/analytics')->group(function () {
     Route::get('/bounce-rate', [AnalyticsController::class, 'bounceRate']);
     Route::get('/return-visitors', [AnalyticsController::class, 'returnVisitors']);
     Route::get('/engagement-rate', [AnalyticsController::class, 'engagementRate']);
+    Route::get('/export-word', [AnalyticsController::class, 'exportWordReport']);
+
 });
 
 

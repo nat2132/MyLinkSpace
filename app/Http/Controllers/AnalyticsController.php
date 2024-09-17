@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Models\LinkClick;
 use App\Models\ProfileView;
 use Illuminate\Http\Request;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
 
 class AnalyticsController extends Controller
 {
@@ -100,5 +103,78 @@ class AnalyticsController extends Controller
         $engagementRate = $totalInteractions > 0 ? ($totalInteractions / $totalViews) * 100 : 0;
 
         return response()->json(['engagement_rate' => $engagementRate]);
+    }
+
+    public function exportWordReport(Request $request, $userId)
+    {
+        // Check if user is premium
+        $user = auth()->user(); // Assuming you have user authentication
+        if (!$user->is_premium) {
+            return response()->json(['message' => 'This feature is available for premium users only.'], 403);
+        }
+
+        // Validate date filters
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Gather analytics data
+        $clicks = LinkClick::where('user_id', $userId)
+            ->whereBetween('clicked_at', [$startDate, $endDate])
+            ->get();
+
+        $views = ProfileView::where('user_id', $userId)
+            ->whereBetween('viewed_at', [$startDate, $endDate])
+            ->get();
+
+        // Create a new Word document
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+
+        // Add title
+        $section->addTitle('Analytics Report', 1);
+        $section->addText('Report Period: ' . $startDate . ' to ' . $endDate);
+        $section->addTextBreak(1);
+
+        // Add link clicks section
+        $section->addTitle('Link Clicks', 2);
+        if ($clicks->isEmpty()) {
+            $section->addText('No clicks recorded during this period.');
+        } else {
+            foreach ($clicks as $click) {
+                $section->addText('Link ID: ' . $click->link_id);
+                $section->addText('User ID: ' . $click->user_id);
+                $section->addText('User Agent: ' . $click->user_agent);
+                $section->addText('Clicked At: ' . $click->clicked_at);
+                $section->addTextBreak(1);
+            }
+        }
+
+        // Add profile views section
+        $section->addTitle('Profile Views', 2);
+        if ($views->isEmpty()) {
+            $section->addText('No views recorded during this period.');
+        } else {
+            foreach ($views as $view) {
+                $section->addText('Profile ID: ' . $view->profile_id);
+                $section->addText('User ID: ' . $view->user_id);
+                $section->addText('User Agent: ' . $view->user_agent);
+                $section->addText('Viewed At: ' . $view->viewed_at);
+                $section->addTextBreak(1);
+            }
+        }
+
+        // Save the Word document
+        $fileName = 'analytics_report_' . $userId . '_' . date('YmdHis') . '.docx';
+        $filePath = storage_path($fileName);
+
+        $phpWord->save($filePath, 'Word2007');
+
+        // Return the file as a response
+        return response()->download($filePath)->deleteFileAfterSend(true);
     }
 }
