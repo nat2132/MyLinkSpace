@@ -18,7 +18,7 @@ function Header() {
                 <li><img src={logo} alt="" /></li>
                 <li><img src={link} alt="" /><Link to='/links'>Links</Link></li>
                 <li><img src={appearance} alt="" /><Link to='/appearance'>Appearance</Link></li>
-                <li><img src={analytics} alt="" /><Link to='/analytics'>Analytics</Link></li>
+                <li><img src={analytics} alt="" /><Link to='/analysis'>Analytics</Link></li>
                 <li style={{marginLeft:'500px'}}><img src={speaker} alt="" /></li>
                 <li><button className='upgrade-btn'><img src={upgrade} alt="" />Upgrade</button></li>
                 <li><button className='share-btn'><img src={share} alt="" />Share</button></li>

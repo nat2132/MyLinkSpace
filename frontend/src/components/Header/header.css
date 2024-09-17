@@ -3,6 +3,8 @@ nav {
 }
 
 .links {
+    position: fixed;
+    z-index: 2;
     border-radius: 40px;
     background-color: white;
     display: flex; /* Use flexbox for horizontal alignment */
@@ -43,9 +45,25 @@ nav {
 
 
 }
+.share-btn:hover{
+    background-color: #c6caca;
+}
+.upgrade-btn:hover{
+    background-color: #c6caca;
+}
 .share-btn img{
     margin-left: 5px;
 }
 .upgrade-btn img{
     margin-left: 5px;
 }
+.links li a { /* Default link color */
+    text-decoration: none;
+    transition: color 0.3s; /* Smooth transition for text */
+  }
+  
+  /* Hover effects */
+  .links li:hover a {
+    color: #a6abab; /* Change link color on hover */
+  }
+  
