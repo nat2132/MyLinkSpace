@@ -5,28 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Link extends Model
+class ProfileView extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'title',
-        'url',
-        'is_active',
-        'start_time',
-        'end_time',
+        'profile_id',
+        'user_agent',
+        'viewed_at',
     ];
 
-
+    // Relationship to User model
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function linkClicks()
+    // Relationship to Profile model
+    public function profile()
     {
-        return $this->hasMany(LinkClick::class);
+        return $this->belongsTo(Profile::class);
     }
-
 }

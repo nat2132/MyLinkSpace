@@ -47,4 +47,13 @@ class User extends Authenticatable
         return $this->hasMany(Link::class);
     }
 
+    public function linkClicks()
+    {
+        return $this->hasMany(LinkClick::class);
+    }
+
+    public function profileViews()
+    {
+        return $this->hasMany(ProfileView::class);
+    }
 }

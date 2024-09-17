@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Link;
+use App\Models\LinkClick;
 use Illuminate\Http\Request;
 
 
@@ -65,5 +66,19 @@ class LinkController extends Controller
             $link->delete();
             return response()->json(null, 204);
         }
-    
-}
+
+        public function trackClick(Request $request, $userId, $linkId)
+        {
+            $validated = $request->validate([
+                'user_agent' => 'string|nullable',
+            ]);
+
+            LinkClick::create([
+                'user_id' => $userId,
+                'link_id' => $linkId,
+                'user_agent' => $validated['user_agent'] ?? $request->header('User-Agent'),
+            ]);
+
+            return response()->json(['message' => 'Click tracked successfully.']);
+        }
+    }
