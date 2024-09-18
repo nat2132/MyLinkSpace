@@ -33,6 +33,17 @@
     background-color: white;
     border-radius: 30px;
 }
+.buttons {
+    position: relative;
+    margin-left: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 250px); /* 4 equal columns */
+    gap: 5px; /* Space between items */
+    padding: 20px; /* Padding around the grid */
+    width: 950px;
+    background-color: white;
+    border-radius: 30px;
+}
 
 .grid-item {
     color: rgb(250, 249, 249);
@@ -43,6 +54,16 @@
     border-radius: 8px; /* Rounded corners */
     font-size: 18px; /* Font size */
     height: 300px; /* Fixed height for better alignment */
+    width:200px;
+}
+.grid-item1{
+    color: rgb(250, 249, 249);
+    position: absolute;
+/* Background color for visibility */
+ /* Padding inside each container */
+    text-align: center; /* Center the text */ /* Rounded corners */
+    font-size: 18px; /* Font size */
+    height: 50px; /* Fixed height for better alignment */
     width:200px;
 }
 

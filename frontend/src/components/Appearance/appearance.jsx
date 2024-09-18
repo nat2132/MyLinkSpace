@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../Header/header'
 import profile from '/src/images/profile.jpg'
 import './appearance.css'
@@ -7,7 +7,12 @@ import mobile from '/src/images/mobile.png'
 import { FaUnlock } from "react-icons/fa";
 
 
+
 function appearance() {
+    const[color,setColor]=useState("")
+    function handleChange(e){
+        setColor(e.target.value)
+    }
   return (
     <div>
         <Header/>
@@ -111,12 +116,46 @@ function appearance() {
         <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'150px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'10px'}}>Upgrade<FaUnlock/></button>
             <div style={{marginTop:'220px'}}>blured grey</div>
         </div>
+        <div style={{marginTop:'350px',marginLeft:'-700px'}}>
+            <h2>Color</h2>
+            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' value={color} onChange={handleChange} />
+        </div>
+
+
+        </div>
+        <h2 style={{marginTop:'30px',fontWeight:'bolder',fontSize:'25px',marginLeft:'45px'}}>Buttons </h2><br/>
+        <div className='buttons'>
+        <div style={{marginTop:'30px', marginLeft:'80px',   backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
+            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-160px'}}>Fill</h2>
+        </div>
+
+
+            <div style={{ marginTop:'30px',   borderRadius:'10px', marginLeft:'80px',     backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
+        </div>
+
+        <div style={{marginTop:'30px', borderRadius:'30px',marginLeft:'80px',     backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
+        </div>
+
+        <div style={{marginTop:'50px', marginLeft:'80px',   backgroundColor: '',border:'2px solid black',      display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
+            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-160px'}}>Outline</h2>
+        </div>
+
+
+            <div style={{ marginTop:'50px',   borderRadius:'10px', marginLeft:'80px',border:'2px solid black',     backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
+        </div>
+
+        <div style={{marginTop:'50px', borderRadius:'30px',marginLeft:'80px', border:'2px solid black',         backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
+        </div>
+
+
+
+
 
 
         </div>
 
 
-        <p></p>
+
 
 
       
