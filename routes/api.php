@@ -30,6 +30,7 @@ Route::prefix('users/{userId}/links')->group(function () {
 });
 
 
+// Route for analytics
 Route::prefix('users/{userId}/analytics')->group(function () {
     Route::get('/total-clicks', [AnalyticsController::class, 'totalClicks']);
     Route::get('/clicks-per-link', [AnalyticsController::class, 'clicksPerLink']);
