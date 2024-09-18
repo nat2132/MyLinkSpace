@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AnalyticsController;
 
 /*
@@ -41,6 +42,8 @@ Route::prefix('users/{userId}/analytics')->group(function () {
 
 });
 
+// Route for generating QR code
+Route::get('users/{userId}/profile/qrcode', [ProfileController::class, 'generateQRCode']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

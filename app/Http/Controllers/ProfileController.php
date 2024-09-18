@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Endroid\QrCode\QrCode;
 use App\Models\ProfileView;
 use Illuminate\Http\Request;
+use App\Models\Profile;
+use Endroid\QrCode\Writer\PngWriter;
+
 
 class ProfileController extends Controller
 {
@@ -48,17 +51,39 @@ class ProfileController extends Controller
     }
 
     public function trackView(Request $request, $userId, $profileId)
-{
-    $validated = $request->validate([
-        'user_agent' => 'string|nullable',
-    ]);
+    {
+        $validated = $request->validate([
+            'user_agent' => 'string|nullable',
+        ]);
 
-    ProfileView::create([
-        'user_id' => $userId,
-        'profile_id' => $profileId,
-        'user_agent' => $validated['user_agent'] ?? $request->header('User-Agent'),
-    ]);
+        ProfileView::create([
+            'user_id' => $userId,
+            'profile_id' => $profileId,
+            'user_agent' => $validated['user_agent'] ?? $request->header('User-Agent'),
+        ]);
 
-    return response()->json(['message' => 'Profile view tracked successfully.']);
-}
+        return response()->json(['message' => 'Profile view tracked successfully.']);
+    }
+
+    public function generateQRCode($userId)
+    {
+        // Retrieve the user's profile
+        $profile = Profile::where('user_id', $userId)->firstOrFail();
+
+        // Construct the profile link based on your URL structure
+        $profileLink = url('/user/' . $profile->user_id); // Adjust as needed
+
+        // Generate the QR code
+        $qrCode = new QrCode($profileLink);
+        $qrCode->setSize(300);
+        $qrCode->setMargin(10);
+
+        // Use PngWriter to create the PNG image
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+
+        // Return the QR code as a PNG image
+        return response($result->getString())
+            ->header('Content-Type', 'image/png');
+    }
 }
