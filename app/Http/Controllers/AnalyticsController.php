@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\LinkClick;
 use App\Models\ProfileView;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
+use Illuminate\Support\Facades\DB;
+use App\Notifications\PerformanceNotification;
 
 class AnalyticsController extends Controller
 {
@@ -65,7 +67,11 @@ class AnalyticsController extends Controller
             ->orderBy('total_clicks', 'asc')
             ->take(5)
             ->get();
-
+         
+           // Notify the user
+        $user = User::find($userId);
+        $user->notify(new PerformanceNotification($topLinks, $bottomLinks));    
+        
         return response()->json([
             'top_links' => $topLinks,
             'bottom_links' => $bottomLinks,

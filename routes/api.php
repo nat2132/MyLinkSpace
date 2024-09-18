@@ -48,3 +48,6 @@ Route::get('users/{userId}/profile/qrcode', [ProfileController::class, 'generate
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Route for notification
+Route::get('users/{userId}/notifications', [ProfileController::class, 'fetchNotifications']);

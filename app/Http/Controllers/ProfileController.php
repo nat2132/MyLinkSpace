@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
+use App\Models\Profile;
 use Endroid\QrCode\QrCode;
 use App\Models\ProfileView;
 use Illuminate\Http\Request;
-use App\Models\Profile;
 use Endroid\QrCode\Writer\PngWriter;
 
 
@@ -85,5 +86,11 @@ class ProfileController extends Controller
         // Return the QR code as a PNG image
         return response($result->getString())
             ->header('Content-Type', 'image/png');
+    }
+
+    public function getNotifications($userId)
+    {
+        $user = User::find($userId);
+        return $user->notifications()->latest()->get();
     }
 }
