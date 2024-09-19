@@ -146,6 +146,22 @@ function appearance() {
 
         <div style={{marginTop:'50px', borderRadius:'30px',marginLeft:'80px', border:'2px solid black',         backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
         </div>
+
+        <div style={{marginTop:'50px', marginLeft:'80px',   backgroundColor: '',border: '4px inset #000',     display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
+            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-130px'}}>Special</h2>
+            <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'-35px',marginLeft:'40px'}}>Upgrade<FaUnlock/></button>
+        </div>
+
+
+            <div style={{ marginTop:'50px',   borderRadius:'10px', marginLeft:'80px',border:'4px inset #000',     backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
+        </div>
+
+        <div style={{marginTop:'50px', borderRadius:'30px',marginLeft:'80px', border:'4px inset black',         backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
+        </div>
+
+
+
+
         <div style={{marginTop:'50px',marginLeft:'80px'}}>
             <h2>button Color</h2>
             <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' value={color} onChange={handleChange} />
@@ -153,6 +169,38 @@ function appearance() {
 
 
 
+
+
+
+
+
+
+        </div>
+
+        <h2 style={{marginTop:'40px',fontWeight:'bolder',fontSize:'25px',marginLeft:'45px'}}>Fonts </h2><br/>
+        <div className='fonts' style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+            <h2 style={{color:'black',marginTop:'',marginLeft:''}}>Font</h2>
+            
+            <select style={{border:'2px grey solid',borderRadius:'20px',padding:'10px',width:'600px'}} id="fontSelect">
+            <option value="Arial">Arial</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Verdana">Verdana</option>
+        </select>
+        <div style={{marginTop:'20px',marginLeft:''}}>
+            <h2>Font Color</h2>
+            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' value={color} onChange={handleChange} />
+        </div>
+            
+
+
+
+        </div>
+
+        <div className='mylinkspacelogo'>
+            <h2>Hide the MyLinkSpace</h2>
+            <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'-35px',marginLeft:'40px',color:'white',marginTop:''}}>Upgrade<FaUnlock/></button>
 
 
 
