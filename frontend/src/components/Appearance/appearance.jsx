@@ -137,7 +137,7 @@ function appearance() {
         </div>
 
         <div style={{marginTop:'50px', marginLeft:'80px',   backgroundColor: '',border:'2px solid black',      display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-160px'}}>Outline</h2>
+            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-130px'}}>Outline</h2>
         </div>
 
 
@@ -145,6 +145,10 @@ function appearance() {
         </div>
 
         <div style={{marginTop:'50px', borderRadius:'30px',marginLeft:'80px', border:'2px solid black',         backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
+        </div>
+        <div style={{marginTop:'50px',marginLeft:'80px'}}>
+            <h2>button Color</h2>
+            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' value={color} onChange={handleChange} />
         </div>
 
 
