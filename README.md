@@ -23,59 +23,131 @@ Welcome to the Linktree-like API! This API allows you to manage links, track com
 
 ## 1. Link Management
 
-### Create a Link
+# Link Management API
 
-**Endpoint:** `POST /api/users/{userId}/links`
+## Overview
 
-**Request Body:**
-```json
+This API provides a set of endpoints for managing user links in a Linktree-like application. Users can create, read, update, and delete links associated with their profiles.
+
+
+## Endpoints
+
+### 1. Get All Links for a User
+
+- **Method**: `GET`
+- **Endpoint**: `/users/{userId}/links`
+- **Description**: Retrieves all links associated with the specified user.
+- **URL Parameters**:
+  - `userId` (string): The ID of the user.
+
+### 2. Create a New Link
+
+- **Method**: `POST`
+- **Endpoint**: `/users/{userId}/links`
+- **Description**: Creates a new link for the specified user.
+- **URL Parameters**:
+  - `userId` (string): The ID of the user.
+- **Request Body**:
+  ```json
+  {
+      "title": "My Website",
+      "url": "https://mywebsite.com",
+      "is_active": true,
+      "start_time": null,
+      "end_time": null
+  }
+  ```
+- **Request Body Fields**:
+  - `title` (string): The title of the link.
+  - `url` (string): The URL of the link.
+  - `is_active` (boolean): Indicates if the link is active.
+  - `start_time` (string, optional): The start time for link visibility.
+  - `end_time` (string, optional): The end time for link visibility.
+
+### 3. Get a Specific Link
+
+- **Method**: `GET`
+- **Endpoint**: `/users/{userId}/links/{id}`
+- **Description**: Retrieves details of a specific link by its ID for the specified user.
+- **URL Parameters**:
+  - `userId` (string): The ID of the user.
+  - `id` (string): The ID of the link.
+
+### 4. Update a Link
+
+- **Method**: `PUT`
+- **Endpoint**: `/users/{userId}/links/{id}`
+- **Description**: Updates the details of a specific link for the specified user.
+- **URL Parameters**:
+  - `userId` (string): The ID of the user.
+  - `id` (string): The ID of the link.
+- **Request Body**:
+  ```json
+  {
+      "title": "Updated Title",
+      "url": "https://updatedurl.com",
+      "is_active": false
+  }
+  ```
+- **Request Body Fields**:
+  - `title` (string): The updated title of the link.
+  - `url` (string): The updated URL of the link.
+  - `is_active` (boolean): Indicates if the link should be active.
+
+### 5. Delete a Link
+
+- **Method**: `DELETE`
+- **Endpoint**: `/users/{userId}/links/{id}`
+- **Description**: Deletes a specific link by its ID for the specified user.
+- **URL Parameters**:
+  - `userId` (string): The ID of the user.
+  - `id` (string): The ID of the link.
+
+## Example Requests
+
+### Get All Links for a User
+
+```
+GET /api/users/123/links
+```
+
+### Create a New Link
+
+```
+POST /api/users/123/links
+Content-Type: application/json
+
 {
-    "url": "https://example.com",
-    "title": "Example Link",
-    "description": "A brief description of the link."
+    "title": "My Website",
+    "url": "https://mywebsite.com",
+    "is_active": true
 }
 ```
 
-**Response:**
-- Returns the created link object.
+### Get a Specific Link
 
----
-
-### Get Links
-
-**Endpoint:** `GET /api/users/{userId}/links`
-
-**Response:**
-- Returns a list of links associated with the user.
-
----
+```
+GET /api/users/123/links/456
+```
 
 ### Update a Link
 
-**Endpoint:** `PUT /api/users/{userId}/links/{linkId}`
+```
+PUT /api/users/123/links/456
+Content-Type: application/json
 
-**Request Body:**
-```json
 {
-    "url": "https://new-url.com",
     "title": "Updated Title",
-    "description": "Updated description."
+    "url": "https://updatedurl.com",
+    "is_active": false
 }
 ```
 
-**Response:**
-- Returns the updated link object.
-
----
-
 ### Delete a Link
 
-**Endpoint:** `DELETE /api/users/{userId}/links/{linkId}`
-
-**Response:**
-- Returns a success message.
-
----
+```
+DELETE /api/users/123/links/456
+```
 
 ## 2. Analytics
 
