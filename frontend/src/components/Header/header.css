@@ -1,0 +1,69 @@
+nav {
+    padding: 1rem;
+}
+
+.links {
+    position: fixed;
+    z-index: 2;
+    border-radius: 40px;
+    background-color: white;
+    display: flex; /* Use flexbox for horizontal alignment */
+    align-items: center; /* Center items vertically */
+    list-style-type: none; /* Remove default list styles */
+    padding: 10px; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.links li {
+    display: flex; /* Use flexbox for each list item */
+    align-items: center; /* Center items vertically */
+    margin-right: 1.5rem; /* Space between items */
+}
+
+.links img {
+   margin-right: 0.3rem;
+   margin-left: 30px;
+
+    height: 24px; /* Set a height for the images */
+    width: 24px; /* Set a width for the images */
+}
+
+.upgrade-btn {
+    background-color: #F3F3F1; /* Example button color */
+    border: none;
+    display: flex;
+    padding:5px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+.share-btn {
+    border: 2px solid rgb(172, 170, 170);
+    display: flex;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 20px;
+
+
+}
+.share-btn:hover{
+    background-color: #c6caca;
+}
+.upgrade-btn:hover{
+    background-color: #c6caca;
+}
+.share-btn img{
+    margin-left: 5px;
+}
+.upgrade-btn img{
+    margin-left: 5px;
+}
+.links li a { /* Default link color */
+    text-decoration: none;
+    transition: color 0.3s; /* Smooth transition for text */
+  }
+  
+  /* Hover effects */
+  .links li:hover a {
+    color: #a6abab; /* Change link color on hover */
+  }
+  

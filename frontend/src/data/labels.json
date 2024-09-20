@@ -1,0 +1,8 @@
+[
+    { "label": "January1", "totalClicks": 100, "visitCounts": 20, "totalViews": 120 },
+    { "label": "January10", "totalClicks": 120, "visitCounts": 30, "totalViews": 100 },
+    { "label": "January12", "totalClicks": 10, "visitCounts": 40, "totalViews": 180 },
+    { "label": "January13", "totalClicks": 100, "visitCounts": 50, "totalViews": 120 },
+    { "label": "January17", "totalClicks": 20, "visitCounts": 60, "totalViews": 10 },
+    { "label": "January23", "totalClicks": 60, "visitCounts": 70, "totalViews": 20 }
+]
