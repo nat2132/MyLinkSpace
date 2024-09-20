@@ -5,14 +5,22 @@ import './appearance.css'
 import { IoAdd } from "react-icons/io5";
 import mobile from '/src/images/mobile.png'
 import { FaUnlock } from "react-icons/fa";
+import { themes } from '../../themes';
 
 
 
 function appearance() {
-    const[color,setColor]=useState("")
-    function handleChange(e){
-        setColor(e.target.value)
-    }
+    const [selectedTheme, setSelectedTheme] = useState(themes[0]);
+
+    const handleThemeChange = (theme) => {
+      setSelectedTheme(theme);
+    };
+  
+    const handleUpgradeClick = (themeName) => {
+      alert(`Upgrading to ${themeName} theme!`);
+    };
+
+
   return (
     <div>
         <Header/>
@@ -36,69 +44,113 @@ function appearance() {
             </div>
 
         </div>
-        <div>
-            <img style={{marginTop:'-360px',marginLeft:'1000px'}} src={mobile} alt="" />
-        </div>
-        <h2 style={{marginLeft:'60px',fontWeight:'bolder',fontSize:'25px'}}>Themes</h2>
+        <h2 style={{marginTop:'30px',marginLeft:'60px',fontWeight:'bolder',fontSize:'25px'}}>Themes</h2>
 
-        <div className='themes-container'>
-        <div style={{    backgroundColor: '#39E09B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div className='in'style={{display:'block',marginTop:'100px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>lightgreen</div>
-        </div>
-        <div style={{backgroundColor:'rgb(227, 5, 239)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div className='in'style={{marginTop:'100px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>pink</div>
-        </div>
-        <div style={{backgroundColor:'rgb(125, 124, 124)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div className='in'style={{display:'block',marginTop:'100px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>grey</div>
-        </div>
-        <div style={{backgroundColor:'rgb(7, 187, 232)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div className='in'style={{display:'block',marginTop:'100px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>lightblue</div>
-        </div>
-        
-        <div style={{background:'linear-gradient(#cbc9c9, #7ab3f5, #FFC300)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-        <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'150px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'10px'}}>Upgrade<FaUnlock/></button>
-            <div className='in'style={{display:'block',marginTop:'55px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>breeze orange</div>
-        </div>
-        <div style={{background:'linear-gradient(135deg, #FF5733, #33FF57, #3357FF)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-        <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'150px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'10px'}}>Upgrade<FaUnlock/></button>
-            <div className='in'style={{display:'block',marginTop:'55px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>rainbow</div>
-        </div>
-        <div style={{background: 'linear-gradient(135deg, #ffffff, #f80637, #FFC300)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-        <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'150px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'10px'}}>Upgrade<FaUnlock/></button>
-            <div className='in'style={{display:'block',marginTop:'55px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>spicy</div>
-        </div>
-        <div style={{backgroundColor:'rgb(14, 11, 51)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
+            
+    <div style={{ display: 'flex', padding: '20px' }}>
+      <div className='themes-container' style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        gap: '20px',
+        width: '900px',
+        height:'730px',
+        position:'relative',
+        backgroundColor:'white',
+        padding:'20px',
+        marginLeft:'30px',
+        borderRadius:'30px'
 
-            <div className='in'style={{display:'block',marginTop:'100px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>night</div>
-        </div>
+      }}>
+        {themes.map((theme, index) => (
+            <div>
+                                        {index >= themes.length - 3 && (
+                                                            
+                            
+                                                            <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent theme selection when clicking the button
+                  handleUpgradeClick(theme.name);
+                }}
+                style={{
+                  padding: '4px 6px',
+                  display:'flex',
+                  alignItems:'center',
+                  border: 'none',
+                  borderRadius: '4px',
+                  backgroundColor: '#FFD700',
+                  color: '#000',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  marginLeft:'65px',
+                  position:'absolute',
+                  zIndex:'2',
+                  marginTop:'15px'
+                }}
+              >
+                Upgrade <FaUnlock/>
+              </button>
+
+              
+
+                            
+
+              
+            )}
+                          <div
+            key={theme.name}
+            onClick={() => handleThemeChange(theme)}
+            style={{
+              background: theme.backgroundColor,
+              color: theme.textColor,
+              position:'absolute',
+              zIndex:'1',
+              padding: '10px',
+              borderRadius: '8px',
+              textAlign: 'center',
+              cursor: 'pointer',
+              transition: 'transform 0.2s',
+              border: selectedTheme.name === theme.name ? '2px solid #ffffff' : 'none',
+            }}
+            className="grid-item"
+          >
+
+            <div style={{display:'flex',marginTop:'35px',gap:'10px',flexDirection:'column',alignItems:'center'}}>
+            <div className='in'style={{marginTop:'60px',width:'150px',borderRadius:'50px',backgroundColor:'white',color:'white'}}>.</div>
+            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white',color:'white'}}>.</div>
+            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white',color:'white'}}>.</div>
+            </div>
+            <h3 style={{marginTop:'95px'}}>{theme.name}</h3>
+
+          </div>
+            </div>
+
+        ))}
+      </div>
+
+      <div
+        style={{
+          padding: '20px',
+          border: '1px solid #ccc',
+          borderRadius: '30px',
+          background: selectedTheme.backgroundColor,
+          color: selectedTheme.textColor,
+          marginLeft: '20px',
+          flex: 1,
+          marginLeft:'1050px',
+          marginRight:'',
+          marginTop:'-510px',
+          position:'fixed',
+          height:'500px',
+          width:'300px',
+          boxShadow: '0 10px 15px rgba(0, 0, 0, 0.2)'
+        }}
+      >
+        <h2>Preview</h2>
+        <p> {selectedTheme.name} </p>
+      </div>
+    </div>
 
 
-
-        </div>
         <div style={{marginLeft:'60px',marginTop:'30px'}}>
         <h2 style={{fontWeight:'bolder',fontSize:'25px'}}>Custom appearance</h2>
         <p>Completely customize your Linktree profile. Change your background with colors,<br /> gradients and images. Choose a button style, change the typeface and more.</p>
@@ -118,7 +170,7 @@ function appearance() {
         </div>
         <div style={{marginTop:'350px',marginLeft:'-700px'}}>
             <h2>Color</h2>
-            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' value={color} onChange={handleChange} />
+            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color'   />
         </div>
 
 
@@ -164,7 +216,7 @@ function appearance() {
 
         <div style={{marginTop:'50px',marginLeft:'80px'}}>
             <h2>button Color</h2>
-            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' value={color} onChange={handleChange} />
+            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' />
         </div>
 
 
@@ -190,7 +242,7 @@ function appearance() {
         </select>
         <div style={{marginTop:'20px',marginLeft:''}}>
             <h2>Font Color</h2>
-            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' value={color} onChange={handleChange} />
+            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color'  />
         </div>
             
 
