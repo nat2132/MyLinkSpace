@@ -51,4 +51,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Route for notification
-Route::get('users/{userId}/notifications', [ProfileController::class, 'fetchNotifications']);
+Route::get('users/{userId}/notifications', [ProfileController::class, 'getNotifications']);
