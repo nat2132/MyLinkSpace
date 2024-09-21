@@ -150,3 +150,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{user}/is-social-user', [UserController::class, 'isSocialUser']);
     Route::get('/users/{user}/auth-provider', [UserController::class, 'getAuthProvider']);
 });
+
