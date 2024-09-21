@@ -151,5 +151,7 @@ class UserController extends Controller
     {
         $this->authorize('view', $user);
         return response()->json(['auth_provider' => $user->getAuthProvider()]);
-    }
+
+
+}
 }

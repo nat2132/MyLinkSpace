@@ -11,16 +11,30 @@ class ProfileView extends Model
     use HasFactory;
 
     protected $fillable = [
+
         'profile_id',
         'ip_address',
         'user_agent',
         'referrer',
+        'user_id',
+        'viewed_at',
     ];
+
+
+        
+    // Relationship to User model
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Relationship to Profile model
 
     public function profile()
     {
         return $this->belongsTo(Profile::class);
     }
+
 
     // Scope to get views within a specific date range
     public function scopeWithinDateRange($query, $startDate, $endDate)
@@ -67,3 +81,6 @@ class ProfileView extends Model
         ]);
     }
 }
+
+
+

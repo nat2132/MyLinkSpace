@@ -22,6 +22,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_premium')->default(false);
             $table->integer('max_links')->default(5);
+            $table->boolean('is_verified')->default(false);
+            $table->boolean('is_premium')->default(false);
             $table->timestamps();
         });
     }

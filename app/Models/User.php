@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -18,6 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+
         'username',
         'email',
         'password',
@@ -30,6 +32,7 @@ class User extends Authenticatable
         'avatar',
         'theme_id',
         'custom_domain',
+
     ];
 
     /**
@@ -98,13 +101,15 @@ class User extends Authenticatable
 
     public function linkClicks()
     {
-        return $this->hasManyThrough(LinkClick::class, Link::class);
+        return $this->hasMany(LinkClick::class, Link::class);
     }
+   
 
     public function profileViews()
     {
         return $this->hasManyThrough(ProfileView::class, Profile::class);
     }
+
 
     public function theme()
     {
@@ -168,3 +173,4 @@ class User extends Authenticatable
         }
     }
 }
+

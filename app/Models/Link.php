@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+
 class Link extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
+
         'profile_id',
         'title',
         'url',
@@ -20,27 +22,15 @@ class Link extends Model
         'order',
         'click_count',
         'expiration_date',
+        
+        'start_time',
+        'end_time',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'expiration_date' => 'datetime',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function profile()
-    {
-        return $this->belongsTo(Profile::class);
-    }
-
-    public function linkClicks()
-    {
-        return $this->hasMany(LinkClick::class);
-    }
 
     // Scope for active links
     public function scopeActive($query)
@@ -122,4 +112,20 @@ class Link extends Model
         
         return $views > 0 ? ($clicks / $views) * 100 : 0;
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class);
+    }
+
+    public function linkClicks()
+    {
+        return $this->hasMany(LinkClick::class);
+    }
+
 }

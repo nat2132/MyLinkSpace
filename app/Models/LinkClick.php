@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Link;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -19,12 +20,13 @@ class LinkClick extends Model
         'city',
         'device_type',
         'browser',
+        'user_id',
+        'link_id',
+        'user_agent',
+        'clicked_at',
     ];
 
-    public function link()
-    {
-        return $this->belongsTo(Link::class);
-    }
+   
 
     // Scope to get clicks within a specific date range
     public function scopeWithinDateRange($query, $startDate, $endDate)
@@ -124,4 +126,19 @@ class LinkClick extends Model
 
         return $views > 0 ? ($clicks / $views) * 100 : 0;
     }
+      // Relationship to User model
+      public function user()
+      {
+          return $this->belongsTo(User::class);
+      }
+  
+      // Relationship to Link model
+      public function link()
+      {
+          return $this->belongsTo(Link::class);
+      }
 }
+
+      
+
+

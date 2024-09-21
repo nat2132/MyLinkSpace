@@ -1,66 +1,353 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Linktree-like API Documentation
 
-## About Laravel
+Welcome to the Linktree-like API! This API allows you to manage links, track comprehensive analytics, export reports, generate QR codes, and receive notifications for user performance. Below you will find details for each feature, including endpoints, required variables, and responses.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Table of Contents
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. [Link Management](#link-management)
+2. [Analytics](#analytics)
+   - [Total Clicks](#total-clicks)
+   - [Clicks Per Link](#clicks-per-link)
+   - [Daily, Weekly, Monthly Performance](#daily-weekly-monthly-performance)
+   - [Top and Bottom Performing Links](#top-and-bottom-performing-links)
+   - [Bounce Rate](#bounce-rate)
+   - [Return Visitors](#return-visitors)
+   - [Engagement Rate](#engagement-rate)
+3. [Export Report](#export-report)
+4. [QR Code Generation](#qr-code-generation)
+5. [Notifications](#notifications)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 1. Link Management
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# Link Management API
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Overview
 
-## Laravel Sponsors
+This API provides a set of endpoints for managing user links in a Linktree-like application. Users can create, read, update, and delete links associated with their profiles.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+## Endpoints
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### 1. Get All Links for a User
 
-## Contributing
+- **Method**: `GET`
+- **Endpoint**: `/users/{userId}/links`
+- **Description**: Retrieves all links associated with the specified user.
+- **URL Parameters**:
+  - `userId` (string): The ID of the user.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2. Create a New Link
 
-## Code of Conduct
+- **Method**: `POST`
+- **Endpoint**: `/users/{userId}/links`
+- **Description**: Creates a new link for the specified user.
+- **URL Parameters**:
+  - `userId` (string): The ID of the user.
+- **Request Body**:
+  ```json
+  {
+      "title": "My Website",
+      "url": "https://mywebsite.com",
+      "is_active": true,
+      "start_time": null,
+      "end_time": null
+  }
+  ```
+- **Request Body Fields**:
+  - `title` (string): The title of the link.
+  - `url` (string): The URL of the link.
+  - `is_active` (boolean): Indicates if the link is active.
+  - `start_time` (string, optional): The start time for link visibility.
+  - `end_time` (string, optional): The end time for link visibility.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Get a Specific Link
 
-## Security Vulnerabilities
+- **Method**: `GET`
+- **Endpoint**: `/users/{userId}/links/{id}`
+- **Description**: Retrieves details of a specific link by its ID for the specified user.
+- **URL Parameters**:
+  - `userId` (string): The ID of the user.
+  - `id` (string): The ID of the link.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Update a Link
 
-## License
+- **Method**: `PUT`
+- **Endpoint**: `/users/{userId}/links/{id}`
+- **Description**: Updates the details of a specific link for the specified user.
+- **URL Parameters**:
+  - `userId` (string): The ID of the user.
+  - `id` (string): The ID of the link.
+- **Request Body**:
+  ```json
+  {
+      "title": "Updated Title",
+      "url": "https://updatedurl.com",
+      "is_active": false
+  }
+  ```
+- **Request Body Fields**:
+  - `title` (string): The updated title of the link.
+  - `url` (string): The updated URL of the link.
+  - `is_active` (boolean): Indicates if the link should be active.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 5. Delete a Link
+
+- **Method**: `DELETE`
+- **Endpoint**: `/users/{userId}/links/{id}`
+- **Description**: Deletes a specific link by its ID for the specified user.
+- **URL Parameters**:
+  - `userId` (string): The ID of the user.
+  - `id` (string): The ID of the link.
+
+## Example Requests
+
+### Get All Links for a User
+
+```
+GET /api/users/123/links
+```
+
+### Create a New Link
+
+```
+POST /api/users/123/links
+Content-Type: application/json
+
+{
+    "title": "My Website",
+    "url": "https://mywebsite.com",
+    "is_active": true
+}
+```
+
+### Get a Specific Link
+
+```
+GET /api/users/123/links/456
+```
+
+### Update a Link
+
+```
+PUT /api/users/123/links/456
+Content-Type: application/json
+
+{
+    "title": "Updated Title",
+    "url": "https://updatedurl.com",
+    "is_active": false
+}
+```
+
+### Delete a Link
+
+```
+DELETE /api/users/123/links/456
+```
+
+## 2. Analytics
+
+### Total Clicks
+
+**Endpoint:** `GET /api/users/{userId}/analytics/total-clicks`
+
+**Response:**
+```json
+{
+    "total_clicks": 150
+}
+```
+
+---
+
+### Clicks Per Link
+
+**Endpoint:** `GET /api/users/{userId}/analytics/clicks-per-link`
+
+**Response:**
+```json
+{
+    "link_clicks": [
+        {
+            "link_id": 1,
+            "total_clicks": 100
+        },
+        {
+            "link_id": 2,
+            "total_clicks": 50
+        }
+    ]
+}
+```
+
+---
+
+### Daily, Weekly, Monthly Performance
+
+**Endpoint:** `GET /api/users/{userId}/analytics/performance`
+
+**Query Parameters:**
+- `period`: Specify `daily`, `weekly`, or `monthly`.
+
+**Example Request:**
+```
+GET /api/users/1/analytics/performance?period=daily
+```
+
+**Response:**
+```json
+{
+    "performance": [
+        {
+            "date": "2024-09-01",
+            "total_clicks": 20
+        },
+        {
+            "date": "2024-09-02",
+            "total_clicks": 30
+        }
+    ]
+}
+```
+
+---
+
+### Top and Bottom Performing Links
+
+**Endpoint:** `GET /api/users/{userId}/analytics/top-bottom`
+
+**Response:**
+```json
+{
+    "top_links": [
+        {
+            "link_id": 1,
+            "total_clicks": 100
+        }
+    ],
+    "bottom_links": [
+        {
+            "link_id": 2,
+            "total_clicks": 1
+        }
+    ]
+}
+```
+
+---
+
+### Bounce Rate
+
+**Endpoint:** `GET /api/users/{userId}/analytics/bounce-rate`
+
+**Response:**
+```json
+{
+    "bounce_rate": 25.5
+}
+```
+
+---
+
+### Return Visitors
+
+**Endpoint:** `GET /api/users/{userId}/analytics/return-visitors`
+
+**Response:**
+```json
+{
+    "return_visitors": 30
+}
+```
+
+---
+
+### Engagement Rate
+
+**Endpoint:** `GET /api/users/{userId}/analytics/engagement-rate`
+
+**Response:**
+```json
+{
+    "engagement_rate": 60.0
+}
+```
+
+---
+
+## 3. Export Report
+
+### Export Analytics Report as Word Document
+
+**Endpoint:** `GET /api/users/{userId}/analytics/export-word`
+
+**Query Parameters:**
+- `start_date`: The start date for the report (format: `YYYY-MM-DD`).
+- `end_date`: The end date for the report (format: `YYYY-MM-DD`).
+
+**Example Request:**
+```
+GET /api/users/1/analytics/export-word?start_date=2023-01-01&end_date=2023-01-31
+```
+
+**Response:**
+- Returns a downloadable Word document containing the analytics report.
+
+---
+
+## 4. QR Code Generation
+
+### Generate QR Code for User Profile
+
+**Endpoint:** `GET /api/users/{userId}/profile/qrcode`
+
+**Response:**
+- Returns a PNG image of the QR code linking to the user’s profile.
+
+---
+
+## 5. Notifications
+
+### Fetch Notifications
+
+**Endpoint:** `GET /api/users/{userId}/notifications`
+
+**Response:**
+```json
+[
+    {
+        "id": 1,
+        "type": "App\\Notifications\\PerformanceNotification",
+        "data": {
+            "top_links": [ /* top links data */ ],
+            "bottom_links": [ /* bottom links data */ ]
+        },
+        "created_at": "2024-09-18T12:00:00Z",
+        "updated_at": "2024-09-18T12:00:00Z"
+    }
+]
+```
+
+---
+
+## Important Variables
+
+- **userId**: The ID of the user for whom actions are performed.
+- **linkId**: The ID of the specific link.
+- **start_date**: The start date for the analytics report.
+- **end_date**: The end date for the analytics report.
+- **period**: Specifies the time period for performance data (`daily`, `weekly`, `monthly`).
+
+---
+
+## Conclusion
+
+This API provides comprehensive functionality for managing links, tracking detailed analytics, exporting reports, generating QR codes, and notifying users of their link performance. For any questions or issues, feel free to raise an issue on this repository.
+
+Happy coding! 🎉
+>>>>>>> feature_two

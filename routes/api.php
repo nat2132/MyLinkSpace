@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthController
+;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CustomThemeController;
@@ -10,6 +11,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialMediaIconController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LinkController;
+use App\Http\Controllers\AnalyticsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +24,33 @@ use App\Http\Controllers\UserController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+
+// Routes for link management
+Route::prefix('users/{userId}/links')->group(function () {
+    Route::get('/', [LinkController::class, 'index']);
+    Route::post('/', [LinkController::class, 'store']);
+    Route::get('/{id}', [LinkController::class, 'show']);
+    Route::put('/{id}', [LinkController::class, 'update']);
+    Route::delete('/{id}', [LinkController::class, 'destroy']);
+});
+
+
+// Route for analytics
+Route::prefix('users/{userId}/analytics')->group(function () {
+    Route::get('/total-clicks', [AnalyticsController::class, 'totalClicks']);
+    Route::get('/clicks-per-link', [AnalyticsController::class, 'clicksPerLink']);
+    Route::get('/performance', [AnalyticsController::class, 'performance']);
+    Route::get('/top-bottom-links', [AnalyticsController::class, 'topAndBottomLinks']);
+    Route::get('/bounce-rate', [AnalyticsController::class, 'bounceRate']);
+    Route::get('/return-visitors', [AnalyticsController::class, 'returnVisitors']);
+    Route::get('/engagement-rate', [AnalyticsController::class, 'engagementRate']);
+    Route::get('/export-word', [AnalyticsController::class, 'exportWordReport']);
+
+});
+
+// Route for generating QR code
+Route::get('users/{userId}/profile/qrcode', [ProfileController::class, 'generateQRCode']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -151,3 +181,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{user}/auth-provider', [UserController::class, 'getAuthProvider']);
 });
 
+// Route for notification
+Route::get('users/{userId}/notifications', [ProfileController::class, 'getNotifications']);

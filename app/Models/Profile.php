@@ -11,6 +11,7 @@ class Profile extends Model
     use HasFactory;
 
     protected $fillable = [
+
         'username',
         'title',
         'bio',
@@ -18,6 +19,10 @@ class Profile extends Model
         'theme_id',
         'custom_theme_id',
         'is_public',
+        'user_id',
+        'profile_id',
+        'user_agent',
+        'viewed_at',
     ];
 
     public function user()
@@ -94,4 +99,5 @@ class Profile extends Model
             'social_media_icons' => $this->socialMediaIcons->map->getIconData(),
         ];
     }
+
 }
