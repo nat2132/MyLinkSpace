@@ -2,11 +2,12 @@ import calendar from "../icons/caledar.png";
 import noDataIcon from "../icons/nodata.png";
 import upgradeButton from "../icons/upgradeButton.png";
 import MapIcon from "../icons/map.png";
-import { Colors } from "chart.js";
+
+
 
 export { calendar, noDataIcon, upgradeButton, MapIcon };
 
-export const baseURL = "http://localhost:8000/api";
+export const baseURL = process.env.API_BASE_URL;
 
 export const topAndBottomLinksDummy ={
   top_links: [
