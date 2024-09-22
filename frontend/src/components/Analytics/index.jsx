@@ -1,4 +1,4 @@
-//import Header from "../Header/header";
+import Header from "../Header/header";
 import SectionHeaderText from "./components/SectionHeaderText";
 import AnalyticsSummary from "./components/AnalyticSummary";
 import DateSelector from "./components/DateSelector";
@@ -34,6 +34,7 @@ ChartJS.register(
 function Analytics() {
   return (
     <>
+    <Header/>
       <div className="analytics">
         <AnalyticsSummary />
 
