@@ -13,6 +13,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +48,7 @@ Route::prefix('users/{userId}/analytics')->group(function () {
     Route::get('/return-visitors', [AnalyticsController::class, 'returnVisitors']);
     Route::get('/engagement-rate', [AnalyticsController::class, 'engagementRate']);
     Route::get('/export-word', [AnalyticsController::class, 'exportWordReport']);
-
+    Route::put('/reorder', [LinkController::class, 'reorder']);
 });
 
 // Route for generating QR code
@@ -184,3 +185,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Route for notification
 Route::get('users/{userId}/notifications', [ProfileController::class, 'getNotifications']);
+
+//subscription and payment
+Route::post('subscribe', [PaymentController::class, 'subscribe'])->name('subscribe');
+Route::post('payment/callback', [PaymentController::class, 'paymentCallback'])->name('payment.callback');

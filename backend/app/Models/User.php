@@ -32,7 +32,9 @@ class User extends Authenticatable
         'avatar',
         'theme_id',
         'custom_domain',
-
+        'is_subscribed',
+        'subscription_fee',
+        'subscription_type',
     ];
 
     /**

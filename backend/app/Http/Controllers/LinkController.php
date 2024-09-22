@@ -81,4 +81,20 @@ class LinkController extends Controller
 
             return response()->json(['message' => 'Click tracked successfully.']);
         }
+
+                // Update the order of links
+        public function reorder(Request $request, $userId)
+        {
+            $validated = $request->validate([
+                'links' => 'required|array',
+                'links.*.id' => 'required|exists:links,id',
+                'links.*.order' => 'required|integer',
+            ]);
+
+            foreach ($validated['links'] as $link) {
+                Link::where('id', $link['id'])->where('user_id', $userId)->update(['order' => $link['order']]);
+            }
+
+            return response()->json(['message' => 'Links reordered successfully.']);
+}
     }
