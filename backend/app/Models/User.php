@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Profile;
+use App\Models\Plan;
 
 class User extends Authenticatable
 {
@@ -171,15 +173,4 @@ class User extends Authenticatable
             return 'Email';
         }
     }
-
-    public function profile()
-    {
-        return $this->hasOne(Profile::class);
-    }
-
-    public function plans()
-    {
-        return $this->hasMany(Plan::class);
-    }
 }
-
