@@ -6,7 +6,7 @@ const api = axios.create({
   baseURL,
   withCredentials: true,
 });
-const userId = "123";
+const userId = "0000";
 
 export const fetchAnalyticsSummary = async () => {
   try {
@@ -31,7 +31,7 @@ export const fetchAnalyticsSummary = async () => {
         engagement: engagementResponse.data || 0,
       },
     };
-  } catch (e) {
+  } catch (error) {
     return {
       error: "Error fetching analytics summary",
       data: {
