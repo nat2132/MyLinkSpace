@@ -13,6 +13,38 @@ function appearance() {
     const [selectedTheme, setSelectedTheme] = useState(themes[0]);
     const [customColor, setCustomColor] = useState('#ffffff'); // Default color
     const [isGradient, setIsGradient] = useState(false); // Flag for gradient
+    const [selectedStyles, setSelectedStyles] = useState([]);
+    const [selectedFont, setSelectedFont] = useState('Arial'); // Default font
+    const [fontColor, setFontColor] = useState('#000000'); // Default color
+  
+
+
+    const styles = [
+        { name: 'Square', borderRadius: '0px', backgroundColor: 'black' },
+        { name: 'small Rounded ', borderRadius: '10px', backgroundColor: 'black' },
+        { name: ' Medium Rounded', borderRadius: '30px', backgroundColor: 'black' },
+        { name: 'Square', borderRadius: '0px', backgroundColor: 'white' },
+        { name: 'Small Rounded', borderRadius: '10px', backgroundColor: 'white' },
+        { name: 'Medium Rounded', borderRadius: '30px', backgroundColor: 'white' },
+        { name: 'Square', borderRadius: '0px', backgroundColor: '#3D444B' },
+        { name: 'Small Rounded', borderRadius: '10px', backgroundColor: '#4A5458' },
+        { name: 'Medium Rounded', borderRadius: '30px', backgroundColor: '#5D666B' },
+      ];
+
+      const handleFontChange = (event) => {
+        setSelectedFont(event.target.value); // Update the selected font
+      };
+    
+      const handleFontColorChange = (event) => {
+        setFontColor(event.target.value); // Update the font color
+      };
+
+      const handleStyleChange = (style) => {
+        // Prevent adding the same style multiple times
+        if (!selectedStyles.some(s => s.name === style.name)) {
+          setSelectedStyles([...selectedStyles, style]);
+        }
+      };
 
     const handleThemeChange = (theme) => {
       setSelectedTheme(theme);
@@ -146,6 +178,7 @@ function appearance() {
       : selectedTheme.backgroundColor, // Use selected theme's background color
     height: '400px',
     color: selectedTheme.textColor,
+    fontFamily:{selectedFont},
     marginLeft: '20px',
     flex: 1,
     marginLeft: '1050px',
@@ -155,9 +188,26 @@ function appearance() {
     width: '300px',
     boxShadow: '0 10px 15px rgba(0, 0, 0, 0.2)',
   }}
+  
 >
-  <h2>Preview</h2>
-  <p>{selectedTheme.name}</p>
+{
+            selectedStyles.map((style, index) => (
+              <div
+                key={index}
+                style={{
+                  padding: '10px',
+                  marginTop:'100px',
+                  borderRadius: style.borderRadius,
+                  backgroundColor: style.backgroundColor,
+                  color: 'white',
+                  textAlign: 'center',
+                  marginBottom: '5px', // Space between stacked styles
+                }}
+              >
+                {style.name}
+              </div>
+            ))
+          }
 </div>
     </div>
 
@@ -195,73 +245,65 @@ function appearance() {
         </div>
         <h2 style={{marginTop:'30px',fontWeight:'bolder',fontSize:'25px',marginLeft:'45px'}}>Buttons </h2><br/>
         <div className='buttons'>
-        <div style={{marginTop:'30px', marginLeft:'80px',   backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-160px'}}>Fill</h2>
-        </div>
+        <div style={{ 
+  display: 'grid', 
+  gridTemplateColumns: 'repeat(3, 1fr)', // Three columns
+  gap: '20px', // Space between items
+  marginTop: '10px'
+}}>
+  {styles.map((style, index) => (
+    <div
+      key={index}
+      onClick={() => handleStyleChange(style)}
+      style={{
+        backgroundColor: style.backgroundColor,
+        border: 'none',
+        display: 'flex', // Use flex for inner content
+   marginLeft:'60px',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '0.5rem',
+        cursor: 'pointer',
+        padding: '10px',
+        width:'200px',
+        height:'50px',
+        borderRadius: style.borderRadius,
+        transition: '0.3s',
+        boxShadow: '0 2px 5px rgba(0,0,0,0.3)',
+      }}
+    >
+      <h2 style={{ color: 'white' }}>{style.name}</h2>
+    </div>
+  ))}
+</div>
 
 
-            <div style={{ marginTop:'30px',   borderRadius:'10px', marginLeft:'80px',     backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-        <div style={{marginTop:'30px', borderRadius:'30px',marginLeft:'80px',     backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-        <div style={{marginTop:'50px', marginLeft:'80px',   backgroundColor: '',border:'2px solid black',      display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-130px'}}>Outline</h2>
-        </div>
-
-
-            <div style={{ marginTop:'50px',   borderRadius:'10px', marginLeft:'80px',border:'2px solid black',     backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-        <div style={{marginTop:'50px', borderRadius:'30px',marginLeft:'80px', border:'2px solid black',         backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-        <div style={{marginTop:'50px', marginLeft:'80px',   backgroundColor: '',border: '4px inset #000',     display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-130px'}}>Special</h2>
-            <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'-35px',marginLeft:'40px'}}>Upgrade<FaUnlock/></button>
-        </div>
-
-
-            <div style={{ marginTop:'50px',   borderRadius:'10px', marginLeft:'80px',border:'4px inset #000',     backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-        <div style={{marginTop:'50px', borderRadius:'30px',marginLeft:'80px', border:'4px inset black',         backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-
-
-
-        <div style={{marginTop:'50px',marginLeft:'80px'}}>
-            <h2>button Color</h2>
-            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' />
-        </div>
-
-
-
-
-
-
-
-
-
-        </div>
+       </div>
 
         <h2 style={{marginTop:'40px',fontWeight:'bolder',fontSize:'25px',marginLeft:'45px'}}>Fonts </h2><br/>
-        <div className='fonts' style={{display:'flex',flexDirection:'column',gap:'10px'}}>
-            <h2 style={{color:'black',marginTop:'',marginLeft:''}}>Font</h2>
-            
-            <select style={{border:'2px grey solid',borderRadius:'20px',padding:'10px',width:'600px'}} id="fontSelect">
-            <option value="Arial">Arial</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Georgia">Georgia</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Verdana">Verdana</option>
-        </select>
-        <div style={{marginTop:'20px',marginLeft:''}}>
-            <h2>Font Color</h2>
-            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color'  />
-        </div>
+        <div className='fonts' style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '20px' }}>
+      <h2 style={{ color: 'black' }}>Font</h2>
+      
+      <select 
+        style={{ border: '2px grey solid', borderRadius: '20px', padding: '10px', width: '600px' }} 
+        id="fontSelect" 
+        onChange={handleFontChange}
+      >
+        <option value="Arial">Arial</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+
+      <div style={{ marginTop: '20px' }}>
+        <h2>Font Color</h2>
+        <input 
+          style={{ border: 'none', borderRadius: '30px', width: '50px', height: '50px' }} 
+          type="color" 
+          onChange={handleFontColorChange} 
+        />
+      </div>
             
 
 
