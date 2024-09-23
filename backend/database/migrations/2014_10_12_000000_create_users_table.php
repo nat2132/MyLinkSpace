@@ -23,7 +23,6 @@ return new class extends Migration
             $table->boolean('is_premium')->default(false);
             $table->integer('max_links')->default(5);
             $table->boolean('is_verified')->default(false);
-            $table->boolean('is_premium')->default(false);
             $table->boolean('is_subscribed')->default(false);
             $table->decimal('subscription_fee', 8, 2)->nullable();
             $table->string('subscription_type')->nullable(); // e.g., 'basic', 'premium'    

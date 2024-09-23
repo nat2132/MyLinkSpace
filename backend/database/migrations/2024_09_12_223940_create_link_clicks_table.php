@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('link_clicks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('link_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->ipAddress('ip_address');
             $table->string('user_agent');
             $table->string('referer')->nullable();

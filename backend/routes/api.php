@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController
 ;
 use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\CustomThemeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialMediaIconController;
@@ -69,7 +69,7 @@ Route::options('{any}', function () {
 
 // Register and login routes
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -127,7 +127,8 @@ Route::get('/profile/{username}', [ProfileController::class, 'show']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::put('/profile', [ProfileController::class, 'update']);
+    Route::get('/profile/{id}', [ProfileController::class, 'show']);
+    Route::put('/profile/{id}', [ProfileController::class, 'update']);
     Route::post('/profile/generate-username', [ProfileController::class, 'generateUniqueUsername']);
     
     // Custom Theme routes
@@ -163,6 +164,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // User routes
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{user}', [UserController::class, 'show']);
     Route::put('/users/{user}', [UserController::class, 'update']);
     Route::get('/users/{user}/links', [UserController::class, 'getLinks']);
@@ -193,3 +195,5 @@ Route::get('users/{userId}/notifications', [ProfileController::class, 'getNotifi
 //subscription and payment
 Route::post('subscribe', [PaymentController::class, 'subscribe'])->name('subscribe');
 Route::post('payment/callback', [PaymentController::class, 'paymentCallback'])->name('payment.callback');
+
+Route::post('/profile', [ProfileController::class, 'create'])->middleware('auth:api');

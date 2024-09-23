@@ -11,19 +11,30 @@ use Endroid\QrCode\Writer\PngWriter;
 use App\Models\CustomTheme;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Models\Theme;
 
 class ProfileController extends Controller
 {
-    public function show($username)
+    public function show($id)
     {
-        $profile = Profile::where('username', $username)->firstOrFail();
-        return response()->json($profile->getProfileData());
+        \Log::info('Fetching profile with ID: ' . $id);
+        try {
+            $profile = Profile::findOrFail($id);
+            return response()->json($profile);
+        } catch (ModelNotFoundException $e) {
+            \Log::error('Profile not found with ID: ' . $id);
+            throw new NotFoundHttpException('Profile not found');
+        }
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $user = Auth::user();
-        $profile = $user->profile;
+        \Log::info('Authenticated user: ' . (Auth::check() ? Auth::id() : 'Not authenticated'));
+        $profile = Profile::findOrFail($id);
+        \Log::info('Profile user ID: ' . $profile->user_id);
+        $this->authorize('update', $profile);
 
         $validatedData = $request->validate([
             'title' => 'nullable|string|max:255',
@@ -36,7 +47,7 @@ class ProfileController extends Controller
 
         $profile->update($validatedData);
 
-        return response()->json($profile->getProfileData());
+        return response()->json($profile);
     }
 
     public function incrementViews($username)

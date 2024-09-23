@@ -8,10 +8,23 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function show(User $user)
     {
-        $this->authorize('view', $user);
-        return response()->json($user);
+        \Log::info('Attempting to view user: ' . $user->id);
+        \Log::info('Authenticated user: ' . (Auth::check() ? Auth::id() : 'Not authenticated'));
+
+        try {
+            $this->authorize('view', $user);
+            return response()->json($user);
+        } catch (\Exception $e) {
+            \Log::error('Authorization failed: ' . $e->getMessage());
+            throw $e;
+        }
     }
 
     public function update(Request $request, User $user)
@@ -151,7 +164,11 @@ class UserController extends Controller
     {
         $this->authorize('view', $user);
         return response()->json(['auth_provider' => $user->getAuthProvider()]);
+    }
 
-
-}
+    public function index()
+    {
+        $users = User::all();
+        return response()->json($users);
+    }
 }
