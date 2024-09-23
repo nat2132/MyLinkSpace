@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController
 ;
 use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\CustomThemeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialMediaIconController;
@@ -64,7 +64,7 @@ Route::options('{any}', function () {
 
 // Register and login routes
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -158,6 +158,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // User routes
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{user}', [UserController::class, 'show']);
     Route::put('/users/{user}', [UserController::class, 'update']);
     Route::get('/users/{user}/links', [UserController::class, 'getLinks']);
