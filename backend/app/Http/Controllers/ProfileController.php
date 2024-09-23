@@ -11,13 +11,21 @@ use Endroid\QrCode\Writer\PngWriter;
 use App\Models\CustomTheme;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProfileController extends Controller
 {
-    public function show($username)
+    public function show($id)
     {
-        $profile = Profile::where('username', $username)->firstOrFail();
-        return response()->json($profile->getProfileData());
+        \Log::info('Fetching profile with ID: ' . $id);
+        try {
+            $profile = Profile::findOrFail($id);
+            return response()->json($profile);
+        } catch (ModelNotFoundException $e) {
+            \Log::error('Profile not found with ID: ' . $id);
+            throw new NotFoundHttpException('Profile not found');
+        }
     }
 
     public function update(Request $request)
