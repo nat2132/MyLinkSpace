@@ -175,4 +175,22 @@ class User extends Authenticatable
             return 'Email';
         }
     }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    protected static function booted()
+{
+    static::created(function ($user) {
+        $user->profile()->create([
+            // You can set default values for the profile here if needed
+            'title' => 'Default Title',
+            'bio' => 'Default Bio',
+            'avatar_url' => 'https://example.com/default-avatar.png',
+            'is_public' => true,
+        ]);
+    });
+}
 }

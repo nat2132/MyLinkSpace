@@ -14,21 +14,38 @@ use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Theme;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+        ]);
+
+        $defaultTheme = Theme::firstOrCreate(['name' => 'Default Theme']);
+
+        $profile = Profile::create([
+            'user_id' => $user->id,
+            'theme_id' => $defaultTheme->id,
+            'title' => 'Default Title',
+            'bio' => 'Default Bio',
+            'avatar_url' => 'https://example.com/default-avatar.png',
+            'is_public' => true,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;

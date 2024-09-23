@@ -191,3 +191,5 @@ Route::get('users/{userId}/notifications', [ProfileController::class, 'getNotifi
 //subscription and payment
 Route::post('subscribe', [PaymentController::class, 'subscribe'])->name('subscribe');
 Route::post('payment/callback', [PaymentController::class, 'paymentCallback'])->name('payment.callback');
+
+Route::post('/profile', [ProfileController::class, 'create'])->middleware('auth:api');
