@@ -28,10 +28,12 @@ class ProfileController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $user = Auth::user();
-        $profile = $user->profile;
+        \Log::info('Authenticated user: ' . (Auth::check() ? Auth::id() : 'Not authenticated'));
+        $profile = Profile::findOrFail($id);
+        \Log::info('Profile user ID: ' . $profile->user_id);
+        $this->authorize('update', $profile);
 
         $validatedData = $request->validate([
             'title' => 'nullable|string|max:255',
@@ -44,7 +46,7 @@ class ProfileController extends Controller
 
         $profile->update($validatedData);
 
-        return response()->json($profile->getProfileData());
+        return response()->json($profile);
     }
 
     public function incrementViews($username)

@@ -123,7 +123,8 @@ Route::get('/profile/{username}', [ProfileController::class, 'show']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::put('/profile', [ProfileController::class, 'update']);
+    Route::get('/profile/{id}', [ProfileController::class, 'show']);
+    Route::put('/profile/{id}', [ProfileController::class, 'update']);
     Route::post('/profile/generate-username', [ProfileController::class, 'generateUniqueUsername']);
     
     // Custom Theme routes
@@ -190,5 +191,3 @@ Route::get('users/{userId}/notifications', [ProfileController::class, 'getNotifi
 //subscription and payment
 Route::post('subscribe', [PaymentController::class, 'subscribe'])->name('subscribe');
 Route::post('payment/callback', [PaymentController::class, 'paymentCallback'])->name('payment.callback');
-
-Route::get('/profiles/{id}', [ProfileController::class, 'show']);
