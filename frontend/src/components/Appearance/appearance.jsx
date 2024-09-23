@@ -11,6 +11,8 @@ import { themes } from '../../themes';
 
 function appearance() {
     const [selectedTheme, setSelectedTheme] = useState(themes[0]);
+    const [customColor, setCustomColor] = useState('#ffffff'); // Default color
+    const [isGradient, setIsGradient] = useState(false); // Flag for gradient
 
     const handleThemeChange = (theme) => {
       setSelectedTheme(theme);
@@ -19,6 +21,13 @@ function appearance() {
     const handleUpgradeClick = (themeName) => {
       alert(`Upgrading to ${themeName} theme!`);
     };
+    const handleColorChange = (event) => {
+        setCustomColor(event.target.value);
+      };
+    
+    const toggleGradient = () => {
+        setIsGradient((prev) => !prev);
+      };
 
 
   return (
@@ -128,26 +137,28 @@ function appearance() {
       </div>
 
       <div
-        style={{
-          padding: '20px',
-          border: '1px solid #ccc',
-          borderRadius: '30px',
-          background: selectedTheme.backgroundColor,
-          color: selectedTheme.textColor,
-          marginLeft: '20px',
-          flex: 1,
-          marginLeft:'1050px',
-          marginRight:'',
-          marginTop:'-510px',
-          position:'fixed',
-          height:'500px',
-          width:'300px',
-          boxShadow: '0 10px 15px rgba(0, 0, 0, 0.2)'
-        }}
-      >
-        <h2>Preview</h2>
-        <p> {selectedTheme.name} </p>
-      </div>
+  style={{
+    padding: '20px',
+    border: '1px solid #ccc',
+    borderRadius: '30px',
+    background: isGradient 
+      ? `linear-gradient(45deg, ${customColor}, #ffffff)` // Example gradient
+      : selectedTheme.backgroundColor, // Use selected theme's background color
+    height: '400px',
+    color: selectedTheme.textColor,
+    marginLeft: '20px',
+    flex: 1,
+    marginLeft: '1050px',
+    marginTop: '-510px',
+    position: 'fixed',
+    height: '500px',
+    width: '300px',
+    boxShadow: '0 10px 15px rgba(0, 0, 0, 0.2)',
+  }}
+>
+  <h2>Preview</h2>
+  <p>{selectedTheme.name}</p>
+</div>
     </div>
 
 
@@ -158,19 +169,26 @@ function appearance() {
 
         </div>
         <div className='background'>
-        <div style={{    backgroundColor: 'rgb(75, 73, 73)', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div style={{marginTop:'265px'}}>grey</div>
-        </div>
-        <div style={{    backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div style={{marginTop:'265px'}}>vintage</div>
-        </div>
-        <div style={{ background: 'linear-gradient(135deg,rgb(63, 62, 62),rgb(247, 243, 243))',   backgroundColor: 'rgba(147, 143, 143, 0.995)', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-        <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'150px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'10px'}}>Upgrade<FaUnlock/></button>
-            <div style={{marginTop:'220px'}}>blured grey</div>
-        </div>
-        <div style={{marginTop:'350px',marginLeft:'-700px'}}>
-            <h2>Color</h2>
-            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color'   />
+        <div style={{ marginTop: '20px' }}>
+          <label>
+            Choose Color: 
+            <input 
+              type="color" 
+              value={customColor} 
+              onChange={handleColorChange} 
+              style={{ marginLeft: '10px' }}
+            />
+          </label>
+          <div>
+            <label>
+              <input 
+                type="checkbox" 
+                checked={isGradient} 
+                onChange={toggleGradient} 
+              />
+              Use Gradient
+            </label>
+          </div>
         </div>
 
 
