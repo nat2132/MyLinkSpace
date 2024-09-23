@@ -22,7 +22,7 @@ class Link extends Model
         'order',
         'click_count',
         'expiration_date',
-        
+        'order',
         'start_time',
         'end_time',
     ];

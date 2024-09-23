@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('utm_medium')->nullable();
             $table->string('utm_campaign')->nullable();
             $table->integer('click_count')->default(0);
+            $table->integer('order')->default(0); // New field for ordering
             $table->timestamps();
         });
     }
