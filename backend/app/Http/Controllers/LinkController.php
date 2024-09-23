@@ -79,6 +79,10 @@ class LinkController extends Controller
                 'user_agent' => $validated['user_agent'] ?? $request->header('User-Agent'),
             ]);
 
+        // Increment the clicks in the links table
+        $link = Link::findOrFail($linkId);
+        $link->increment('click_count');            
+
             return response()->json(['message' => 'Click tracked successfully.']);
         }
 

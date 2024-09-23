@@ -34,6 +34,8 @@ Route::prefix('users/{userId}/links')->group(function () {
     Route::get('/{id}', [LinkController::class, 'show']);
     Route::put('/{id}', [LinkController::class, 'update']);
     Route::delete('/{id}', [LinkController::class, 'destroy']);
+    Route::put('/reorder', [LinkController::class, 'reorder']);
+
 });
 
 
@@ -48,8 +50,10 @@ Route::prefix('users/{userId}/analytics')->group(function () {
     Route::get('/return-visitors', [AnalyticsController::class, 'returnVisitors']);
     Route::get('/engagement-rate', [AnalyticsController::class, 'engagementRate']);
     Route::get('/export-word', [AnalyticsController::class, 'exportWordReport']);
-    Route::put('/reorder', [LinkController::class, 'reorder']);
 });
+
+// track links
+Route::post('users/{userId}/links/{linkId}/click', [LinkController::class, 'trackClick']);
 
 // Route for generating QR code
 Route::get('users/{userId}/profile/qrcode', [ProfileController::class, 'generateQRCode']);
