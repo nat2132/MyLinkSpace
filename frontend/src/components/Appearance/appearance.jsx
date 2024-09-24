@@ -16,6 +16,9 @@ function appearance() {
     const [selectedStyles, setSelectedStyles] = useState([]);
     const [selectedFont, setSelectedFont] = useState('Arial'); // Default font
     const [fontColor, setFontColor] = useState('#000000'); // Default color
+    const [selectedImage, setSelectedImage] = useState(null);
+
+
   
 
 
@@ -33,6 +36,14 @@ function appearance() {
 
       const handleFontChange = (event) => {
         setSelectedFont(event.target.value); // Update the selected font
+      };
+
+      const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const imageUrl = URL.createObjectURL(file);
+          setSelectedImage(imageUrl);
+        }
       };
     
       const handleFontColorChange = (event) => {
@@ -69,9 +80,26 @@ function appearance() {
         <div className='profile-container'>
             <div className='profile'>
             <img style={{height:'70px',width:'70px',borderRadius:'50px'}} src={profile} alt="" />
-            <div className='btn'>
-                <button style={{marginBottom:'5px',backgroundColor:'#8129D9',color:'white',padding:'7px',borderRadius:'30px',width:'500px'}}>Pick An Image</button><br />
-                <button style={{border:'1px,solid',color:'grey',padding:'7px',borderRadius:'30px',width:'500px'}}>Remove</button>
+            <div className='btn' style={{marginLeft:'60px'}}>
+            <div style={{ textAlign: 'center' }}>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        style={{ display: '',
+            backgroundColor: '#8129D9',
+            color: 'white',
+            padding: '10px 20px',
+            borderRadius: '30px',
+            cursor: 'pointer',
+            border: 'none',
+            fontSize: '16px',
+            marginBottom:'5px'
+         }} // Hide the file input
+        id="image-upload"
+      />
+    </div>
+                <button style={{border:'1px,solid',color:'grey',padding:'7px',borderRadius:'30px',width:'330px'}}>Remove</button>
 
             </div>
             </div>
@@ -176,10 +204,8 @@ function appearance() {
     background: isGradient 
       ? `linear-gradient(45deg, ${customColor}, #ffffff)` // Example gradient
       : selectedTheme.backgroundColor, // Use selected theme's background color
-    height: '400px',
     color: selectedTheme.textColor,
     fontFamily:{selectedFont},
-    marginLeft: '20px',
     flex: 1,
     marginLeft: '1050px',
     marginTop: '-510px',
@@ -312,7 +338,7 @@ function appearance() {
 
         <div className='mylinkspacelogo'>
             <h2>Hide the MyLinkSpace</h2>
-            <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'-35px',marginLeft:'40px',color:'white',marginTop:''}}>Upgrade<FaUnlock/></button>
+            <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'-35px',marginLeft:'40px',color:'white'}}>Upgrade<FaUnlock/></button>
 
 
 

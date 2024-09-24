@@ -78,5 +78,34 @@
     height: 50px; /* Fixed height for better alignment */
     width:200px;
 }
+/* appearance.css */
 
-
+/* Base styles for the themes container */
+.themes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Default responsive layout */
+    gap: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 30px;
+    margin: 30px auto; /* Center the container */
+    max-width: 90%; /* Responsive max width */
+  }
+  
+  /* Media query for tablets */
+  @media (max-width: 768px) {
+    .themes-container {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust for smaller screens */
+      gap: 15px; /* Reduce gap */
+      padding: 15px; /* Reduce padding */
+    }
+  }
+  
+  /* Media query for mobile screens */
+  @media (max-width: 480px) {
+    .themes-container {
+      grid-template-columns: 1fr; /* Single column layout */
+      gap: 10px; /* Further reduce gap */
+      padding: 10px; /* Further reduce padding */
+    }
+  }
