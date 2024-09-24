@@ -193,7 +193,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('users/{userId}/notifications', [ProfileController::class, 'getNotifications']);
 
 //subscription and payment
-Route::post('subscribe', [PaymentController::class, 'subscribe'])->name('subscribe');
-Route::post('payment/callback', [PaymentController::class, 'paymentCallback'])->name('payment.callback');
 
-Route::post('/profile', [ProfileController::class, 'create'])->middleware('auth:api');
+Route::post('subscribe', [PaymentController::class, 'subscribe'])->name('subscribe');
+Route::get('payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('payment/cancel', [PaymentController::class, 'paymentCancel'])->name('payment.cancel');
