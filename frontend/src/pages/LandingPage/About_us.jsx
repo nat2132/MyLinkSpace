@@ -11,7 +11,7 @@ export default function About_us() {
                 <span className="glitch" data-text="About Us">About Us</span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl lg:text-[21px] text-gray-100 font-medium">
-                MyLinkSpace is a tool to help you share everything you are,
+                <strong>MyLinkSpace</strong> is a   tool to help you share everything you are,
                 in one simple link – making your online content more
                 discoverable, easier to manage and more likely to convert.
                 Here&apos;s where it all began.
