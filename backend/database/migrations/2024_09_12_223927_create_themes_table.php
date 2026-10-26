@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->boolean('is_premium')->default(false);
             $table->string('background_type'); // 'color', 'gradient', 'image'
-            $table->text('background_value');
+            $table->text('background_value')->nullable();
             $table->string('text_color');
             $table->string('button_style'); // 'filled', 'outlined', 'shadow'
             $table->string('button_color');
