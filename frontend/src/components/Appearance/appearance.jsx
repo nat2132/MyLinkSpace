@@ -200,7 +200,7 @@ function appearance() {
 
         <div className='mylinkspacelogo'>
             <h2>Hide the MyLinkSpace</h2>
-            <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'-35px',marginLeft:'40px',color:'white',marginTop:''}}>Upgrade<FaUnlock/></button>
+            <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'-35px',marginLeft:'40px',color:'white'}}>Upgrade<FaUnlock/></button>
 
 
 
