@@ -7,7 +7,9 @@ import MapIcon from "../icons/map.png";
 
 export { calendar, noDataIcon, upgradeButton, MapIcon };
 
-export const baseURL = process.env.API_BASE_URL;
+// Set via VITE_API_BASE_URL (e.g. "http://localhost:8000"). Empty string
+// means "same origin" — useful when the API and frontend are served together.
+export const baseURL = import.meta.env.VITE_API_BASE_URL ?? "";
 
 export const topAndBottomLinksDummy ={
   top_links: [

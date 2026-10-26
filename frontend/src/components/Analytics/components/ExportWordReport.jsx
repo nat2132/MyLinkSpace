@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import CardWraper from './cardWraper';
 import SectionHeaderText from './SectionHeaderText';
 import {upgradeButton} from '../data/const';
+import { resolveUserId, client as authedClient } from '../api/analyticsAPI';
 
-const ExportWordReport = (userId=123 ) => {
+const ExportWordReport = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [error, setError] = useState(null);
@@ -13,11 +13,16 @@ const ExportWordReport = (userId=123 ) => {
   const handleExport = async (e) => {
     e.preventDefault();
     setError(null);
+
+    const userId = resolveUserId();
+    if (!userId) {
+      setError('You must be logged in to export a report.');
+      return;
+    }
     setLoading(true);
-   
 
     try {
-      const response = await axios.post(`/users/${userId}/analytics/export-word`, {
+      const response = await authedClient.post(`/users/${userId}/analytics/export-word`, {
         start_date: startDate,
         end_date: endDate,
       }, {

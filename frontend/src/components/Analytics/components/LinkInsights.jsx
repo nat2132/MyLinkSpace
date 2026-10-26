@@ -4,7 +4,6 @@ import NoData from "./noData";
 
 import { useState, useEffect } from "react";
 import { fetchTopAndBottomLinks } from "../api/analyticsAPI";
-import { topAndBottomLinksDummy } from "../data/const";
 
 export default function LinkInsights() {
   const [topAndBottomLinks, setTopAndBottomLinks] = useState({

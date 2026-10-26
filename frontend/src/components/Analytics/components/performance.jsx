@@ -7,8 +7,6 @@ import { useState, useEffect } from "react";
 import { fetchPerformancedata } from "../api/analyticsAPI";
 import NoData from "./noData";
 
-import { performancedata } from "../data/const";
-
 export default function Performance() {
   const [Performance, setPerformance] = useState([]);
   const [error, setError] = useState(null);
@@ -19,8 +17,8 @@ export default function Performance() {
       setPerformance(data.data);
 
       if (data.error) {
+        // Show the error state instead of fake placeholder data.
         setError(data.error);
-        setPerformance(performancedata);
       }
     };
 

@@ -11,7 +11,6 @@ import {
 import { useEffect, useState } from "react";
 import { fetchClicksPerLink } from "../api/analyticsAPI";
 import NoData from "./noData";
-import { linkDatadefault } from "../data/const";
 
 ChartJS.register(
   CategoryScale,
