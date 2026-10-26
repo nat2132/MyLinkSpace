@@ -20,7 +20,8 @@ return [
     'allowed_methods' => ['*'],
 
 
-    'allowed_origins' => ['*'],
+    // Comma-separated list in .env, e.g. CORS_ALLOWED_ORIGINS="http://localhost:5173,https://app.example.com"
+    'allowed_origins' => array_map('trim', explode(',', (string) env('CORS_ALLOWED_ORIGINS', 'http://localhost:5173'))),
 
     'allowed_origins_patterns' => [],
 
@@ -30,7 +31,9 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
+    // Sanctum personal access tokens are sent via the Authorization header;
+    // cookie-based credential flows are not used by this API.
+    'supports_credentials' => false,
 
 
 ];

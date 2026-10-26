@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController
-;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\CustomThemeController;
@@ -62,10 +61,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// CORS preflight
-Route::options('{any}', function () {
-    return response('', 200);
-})->where('any', '.*');
+// CORS pre-flight requests are handled by the HandleCors middleware
+// (see config/cors.php). No OPTIONS catch-all route is needed here.
 
 // Register and login routes
 Route::post('/register', [AuthController::class, 'register']);
