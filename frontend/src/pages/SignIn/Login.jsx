@@ -1,14 +1,19 @@
 import { useState } from 'react';
-import loginImage from '../assets/loginImage.svg';
-import google from '../assets/google.svg';
+import { useNavigate } from 'react-router-dom';
+import loginImage from '../../assets/loginImage.svg';
+import google from '../../assets/google.svg';
 import { FaFacebook } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.svg';
+import logo from '../../assets/logo.svg';
+import { login } from '../../lib/api';
 
 
 const Login = () => {
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const [errors, setErrors] = useState({ username: '', password: '' });
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({ email: '', password: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [apiError, setApiError] = useState('');
 
   // Handle input changes
   const handleChange = (e) => {
@@ -20,8 +25,10 @@ const Login = () => {
   // Validate form
   const validate = () => {
     const newErrors = {};
-    if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is not valid';
     }
     if (!formData.password.trim()) {
       newErrors.password = 'Password is required';
@@ -30,12 +37,19 @@ const Login = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setApiError('');
     const validationErrors = validate();
     if (Object.keys(validationErrors).length === 0) {
-      // form submission or API call
-      console.log('Form Submitted', formData);
+      setSubmitting(true);
+      const { data, error } = await login(formData.email, formData.password);
+      setSubmitting(false);
+      if (error) {
+        setApiError(error);
+        return;
+      }
+      navigate('/dashboard');
     } else {
       setErrors(validationErrors); // Display errors
     }
@@ -62,20 +76,20 @@ const Login = () => {
             <div className="flex flex-col gap-2">
               <label
                 className="text-lg text-black font-semibold"
-                htmlFor="username"
+                htmlFor="email"
               >
-                Username
+                Email
               </label>
               <input
                 className="bg-[#F2F2F2] w-full p-4 rounded-3xl"
-                type="text"
-                id="username"
-                value={formData.username}
+                type="email"
+                id="email"
+                value={formData.email}
                 onChange={handleChange}
-                placeholder="username"
+                placeholder="email"
               />
-              {errors.username && (
-                <p className="text-red-600 text-sm">{errors.username}</p>
+              {errors.email && (
+                <p className="text-red-600 text-sm">{errors.email}</p>
               )}
             </div>
             <div className="flex flex-col gap-2">
@@ -103,8 +117,15 @@ const Login = () => {
             >
               Forgot Password?
             </Link>
-            <button className="w-full bg-[#7000FF] text-white p-3 rounded-full font-bold">
-              Log in
+            {apiError && (
+              <p className="text-red-600 text-sm text-center">{apiError}</p>
+            )}
+            <button
+              className="w-full bg-[#7000FF] text-white p-3 rounded-full font-bold"
+              type="submit"
+              disabled={submitting}
+            >
+              {submitting ? 'Logging in…' : 'Log in'}
             </button>
           </form>
         </section>
@@ -123,7 +144,7 @@ const Login = () => {
         <p className="text-center">
           Not registered yet?{' '}
           <span className="text-[#7000FF] font-bold">
-            <Link to="/register">Create an account</Link>
+            <Link to="/signup">Create an account</Link>
           </span>
         </p>
       </div>

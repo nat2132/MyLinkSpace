@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import registerImage from '../assets/registerImage.svg';
-import google from '../assets/google.svg';
+import { useNavigate } from 'react-router-dom';
+import registerImage from '../../assets/registerImage.svg';
+import google from '../../assets/google.svg';
 import { FaFacebook } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.svg';
+import logo from '../../assets/logo.svg';
+import { register } from '../../lib/api';
 
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -24,6 +27,9 @@ const Register = () => {
     setFormData({ ...formData, [id]: value });
     setErrors({ ...errors, [id]: '' }); // Clear errors as user types
   };
+
+  const [submitting, setSubmitting] = useState(false);
+  const [apiError, setApiError] = useState('');
 
   // Validate form inputs
   const validate = () => {
@@ -45,12 +51,24 @@ const Register = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setApiError('');
     const validationErrors = validate();
     if (Object.keys(validationErrors).length === 0) {
-      //  form submission 
-      console.log('Form Submitted', formData);
+      setSubmitting(true);
+      // The backend /api/register endpoint expects a "name" field.
+      const { error } = await register(
+        formData.username,
+        formData.email,
+        formData.password,
+      );
+      setSubmitting(false);
+      if (error) {
+        setApiError(error);
+        return;
+      }
+      navigate('/dashboard');
     } else {
       setErrors(validationErrors); // Display validation errors
     }
@@ -136,6 +154,10 @@ const Register = () => {
               )}
             </div>
 
+            {apiError && (
+              <p className="text-red-600 text-sm text-center">{apiError}</p>
+            )}
+
             <Link
               to="/reset"
               className="text-[#7000FF] text-right font-bold my-4"
@@ -143,8 +165,12 @@ const Register = () => {
               Forgot Password?
             </Link>
 
-            <button className="w-full bg-[#7000FF] text-white p-3 rounded-full font-bold">
-              Create Account
+            <button
+              className="w-full bg-[#7000FF] text-white p-3 rounded-full font-bold"
+              type="submit"
+              disabled={submitting}
+            >
+              {submitting ? 'Creating account…' : 'Create Account'}
             </button>
           </form>
         </section>
@@ -168,7 +194,7 @@ const Register = () => {
         </div>
         <p className="text-center">
           Already have an account?{' '}
-          <Link to="/login" className="text-[#7000FF] font-bold">
+          <Link to="/signin" className="text-[#7000FF] font-bold">
             Sign In
           </Link>
         </p>
