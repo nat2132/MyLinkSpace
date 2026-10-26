@@ -83,14 +83,18 @@ Route::get('/probe-theme', function () {
     }
 });
 
-// TEMPORARY: show the deployed AuthController source around the register profile insert.
+// TEMPORARY: dump the deployed Profile model's assignment config.
 Route::get('/probe-code', function () {
-    $lines = file(app_path('Http/Controllers/AuthController.php'), FILE_IGNORE_NEW_LINES);
+    $m = new \App\Models\Profile();
+    $lines = file(app_path('Models/Profile.php'), FILE_IGNORE_NEW_LINES);
     return response()->json([
-        'l35' => $lines[34] ?? null,
-        'l39' => $lines[38] ?? null,
-        'l42' => $lines[41] ?? null,
-        'l46' => $lines[45] ?? null,
+        'class' => get_class($m),
+        'table' => $m->getTable(),
+        'fillable' => $m->getFillable(),
+        'casts' => $m->getCasts(),
+        'profile_head_lines_10_30' => array_values(array_filter(array_map(function ($i, $l) {
+            return ($i >= 10 && $i <= 30) ? (($i + 1) . ': ' . rtrim($l)) : null;
+        }, array_keys($lines), $lines))),
     ]);
 });
 
