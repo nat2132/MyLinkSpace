@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Theme;
+use App\Models\Profile;
 
 class AuthController extends Controller
 {
