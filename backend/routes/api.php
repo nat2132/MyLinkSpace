@@ -83,6 +83,17 @@ Route::get('/probe-theme', function () {
     }
 });
 
+// TEMPORARY: show the deployed AuthController source around the register profile insert.
+Route::get('/probe-code', function () {
+    $lines = file(app_path('Http/Controllers/AuthController.php'), FILE_IGNORE_NEW_LINES);
+    return response()->json([
+        'l35' => $lines[34] ?? null,
+        'l39' => $lines[38] ?? null,
+        'l42' => $lines[41] ?? null,
+        'l46' => $lines[45] ?? null,
+    ]);
+});
+
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
