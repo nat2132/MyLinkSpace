@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         // duplicate of an earlier migration; skip when the table exists anywhere in search_path
-        if (DB::select("select 1 from pg_tables where schemaname = any(current_schemas(true)) and tablename = '" + table + "'")) return;
+        if (DB::select("select 1 from pg_tables where schemaname = any(current_schemas(true)) and tablename = 'notifications'")) return;
         Schema::create('notifications', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('type');
