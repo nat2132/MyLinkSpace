@@ -65,4 +65,4 @@ EXPOSE 8000
 
 # Serve through artisan (fine for a single-container host; put a reverse proxy
 # in front for TLS in production).
-CMD ["sh", "-c", "[ -f .env ] || cp .env.example .env; php artisan config:cache || true; exec php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
+CMD ["sh", "-c", "[ -f .env ] || cp .env.example .env; php artisan migrate --force || true; php artisan config:cache || true; exec php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
