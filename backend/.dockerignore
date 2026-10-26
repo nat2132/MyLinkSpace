@@ -1,0 +1,38 @@
+# Version control
+.git
+.gitignore
+
+# Local dependencies (installed inside the image instead)
+/vendor/
+node_modules/
+
+# Local environment and runtime files
+.env
+.env.backup
+.phpunit.result.cache
+
+# Logs and caches
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+!storage/logs/.gitkeep
+!storage/framework/cache/.gitkeep
+!storage/framework/sessions/.gitkeep
+!storage/framework/views/.gitkeep
+
+# IDE / OS noise
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Tests and docs not needed at runtime
+tests/
+phpunit.xml
+phpunit.xml.dist
+*.md
