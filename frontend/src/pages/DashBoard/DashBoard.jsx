@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import './dashboard.css'
-import Header from '../../components/Header/header'
-import { getLinks, createLink, getStoredUserId } from '../../lib/api'
-import frame from '/src/images/Frame.png'
+import React, { useEffect, useState } from 'react';
+import Header from '../../components/Header/header';
+import { getLinks, createLink, getStoredUserId } from '../../lib/api';
 import { CiCircleRemove } from "react-icons/ci";
-import header from '/src/images/header.png'
-import { GoPencil } from "react-icons/go";
+import { GoPencil, GoShare } from "react-icons/go";
 import { BsTiktok } from "react-icons/bs";
-import { CiImageOn } from "react-icons/ci";
+import { CiImageOn, CiStar, CiLock } from "react-icons/ci";
 import { RiCalendarScheduleLine } from "react-icons/ri";
-import { CiStar } from "react-icons/ci";
-import { CiLock } from "react-icons/ci";
-import { GoShare } from "react-icons/go";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-
 
 function DashBoard() {
   const [links, setLinks] = useState([]);
@@ -23,7 +16,6 @@ function DashBoard() {
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState('');
 
-  // Load the user's links from the API on mount.
   useEffect(() => {
     const fetchLinks = async () => {
       setLoading(true);
@@ -38,7 +30,7 @@ function DashBoard() {
       if (fetchError) {
         setError(fetchError);
       } else {
-        setLinks(data);
+        setLinks(data || []);
       }
       setLoading(false);
     };
@@ -67,124 +59,134 @@ function DashBoard() {
       return;
     }
     setAddForm({ title: '', url: '' });
-    // Refresh the list after a successful create.
-    const { data, error: fetchError } = await getLinks(userId);
-    if (fetchError) {
-      setError(fetchError);
-    } else {
-      setLinks(data);
-    }
+    const { data } = await getLinks(userId);
+    if (data) setLinks(data);
   };
 
   return (
-    <div>
-                <Header/>
-                
-    <div style={{marginTop:'80px'}}className='statistics-container'>
-        <div className='bar-chart'>
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-20">
+      <Header />
+
+      <main className="max-w-6xl mx-auto px-6 pt-28">
+        {/* Top Header Banner */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+          <div>
+            <h1 className="text-2xl font-extrabold text-white">Links &amp; Analytics Dashboard</h1>
+            <p className="text-sm text-slate-400 mt-1">Manage your active bio links, track click counts, and customize your profile.</p>
+          </div>
+          <button
+            onClick={() => {
+              const url = window.location.origin;
+              navigator.clipboard?.writeText(url);
+              alert(`Bio Link copied: ${url}`);
+            }}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs transition-all shadow-lg shadow-purple-500/20"
+          >
+            <GoShare /> Share My Bio Link
+          </button>
+        </div>
+
+        {/* Analytics Card */}
+        <div className="mb-8 bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+          <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider mb-4">Click Analytics</h3>
           {loading ? (
-            <div className="animate-pulse w-full h-64 bg-[#F2F2F2] rounded-lg grid place-items-center text-gray-400">
-              Loading analytics…
-            </div>
-          ) : error ? (
-            <div className="w-full h-64 rounded-lg grid place-items-center px-6 text-center">
-              <p className="text-red-500 text-sm">Could not load analytics: {error}</p>
+            <div className="animate-pulse h-32 bg-slate-950 rounded-xl flex items-center justify-center text-slate-500 text-sm">
+              Loading real-time analytics...
             </div>
           ) : (
-            <div className="w-full h-64 rounded-lg grid place-items-center px-6 text-center text-gray-500">
-              <p className="text-sm">
-                {links.length
-                  ? '— Click analytics will appear here as data is collected —'
-                  : 'No links yet — add your first link below to start collecting analytics.'}
-              </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-slate-950 border border-slate-800 p-4 rounded-xl">
+                <span className="text-xs text-slate-400">Total Bio Links</span>
+                <p className="text-3xl font-extrabold text-white mt-1">{links.length}</p>
+              </div>
+              <div className="bg-slate-950 border border-slate-800 p-4 rounded-xl">
+                <span className="text-xs text-slate-400">Total Link Clicks</span>
+                <p className="text-3xl font-extrabold text-emerald-400 mt-1">{links.reduce((acc, l) => acc + (l.clicks || 0), 0)}</p>
+              </div>
+              <div className="bg-slate-950 border border-slate-800 p-4 rounded-xl">
+                <span className="text-xs text-slate-400">Active Status</span>
+                <p className="text-3xl font-extrabold text-purple-400 mt-1">100% Online</p>
+              </div>
             </div>
           )}
         </div>
-        <div>
-            <img src={frame} alt="" />
 
-        </div>
-      
-    </div>
+        {/* Add Link Form & List */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Form */}
+          <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+            <h3 className="text-lg font-bold text-white mb-4">Add New Bio Link</h3>
+            <form onSubmit={handleAddLink} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">Link Title</label>
+                <input
+                  type="text"
+                  placeholder="e.g. My GitHub Repository"
+                  value={addForm.title}
+                  onChange={(e) => setAddForm({...addForm, title: e.target.value})}
+                  className="w-full bg-slate-950 border border-slate-800 focus:border-purple-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
+                />
+              </div>
 
-    {/* Error banner for link-list failures */}
-    {!loading && error && (
-      <div className="px-8 py-3 text-sm text-red-600" role="alert">{error}</div>
-    )}
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">Destination URL *</label>
+                <input
+                  type="url"
+                  placeholder="https://github.com/nat2132"
+                  value={addForm.url}
+                  onChange={(e) => setAddForm({...addForm, url: e.target.value})}
+                  className="w-full bg-slate-950 border border-slate-800 focus:border-purple-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
+                />
+              </div>
 
-    <div className='add-link'>
-        <div className='enter-url'>
-        <h2>Enter URL</h2>
-        <CiCircleRemove />
-        </div>
+              {addError && <p className="text-xs text-rose-400">{addError}</p>}
 
-        <form className='inputs' onSubmit={handleAddLink}>
-        <input style={{width:'400px',padding:'5px',borderRadius:'3px',backgroundColor:'#F6F7F5'}}type="text" placeholder='Title' value={addForm.title} onChange={(e)=>setAddForm({...addForm,title:e.target.value})}/>
-        <input style={{width:'400px',padding:'5px',borderRadius:'3px',backgroundColor:'#F6F7F5'}}type="text" placeholder='URL' value={addForm.url} onChange={(e)=>setAddForm({...addForm,url:e.target.value})}/>
-        <button className='add-btn' type="submit" disabled={adding}>{adding ? 'Adding…' : 'Add'}</button></form>
-        {addError && <p className="text-red-600 text-sm px-2">{addError}</p>}
-        <hr />
+              <button
+                type="submit"
+                disabled={adding}
+                className="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm transition-all shadow-lg shadow-purple-500/20"
+              >
+                {adding ? 'Adding Link...' : '+ Add Link to Profile'}
+              </button>
+            </form>
+          </div>
 
-        {/* Links from the API */}
-        {loading ? (
-          <div className="animate-pulse h-10 bg-[#F2F2F2] rounded m-2" />
-        ) : links.length ? (
-          <ul className='px-2 py-2'>
-            {links.map((link) => (
-              <li key={link.id ?? link.url}
-                  className='flex items-center justify-between py-2 border-b border-[#E5E5E5]'>
-                <div>
-                  <p className='font-semibold text-sm'>{link.title}</p>
-                  <a href={link.url} target="_blank" rel="noreferrer"
-                     className='text-blue-600 text-xs underline break-all'>
-                    {link.url}
-                  </a>
+          {/* Links List */}
+          <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+            <div>
+              <h3 className="text-lg font-bold text-white mb-4">Your Bio Links</h3>
+              {loading ? (
+                <div className="space-y-3">
+                  <div className="animate-pulse h-12 bg-slate-950 rounded-xl" />
+                  <div className="animate-pulse h-12 bg-slate-950 rounded-xl" />
                 </div>
-                <span className='text-xs text-gray-500'>
-                  {link.is_active === false ? 'inactive' : 'active'}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className='text-gray-400 text-sm px-2 py-2'>
-            No links yet. Add your first link above.
-          </p>
-        )}
-
-        
-
-    </div>
-    <div className='insert-link'>
-        <div className=''>
-            <button className='header-btn'><img src={header} alt="" />Header</button>
+              ) : links.length > 0 ? (
+                <ul className="space-y-3">
+                  {links.map((link) => (
+                    <li key={link.id || link.url} className="p-4 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+                      <div className="overflow-hidden pr-2">
+                        <p className="font-semibold text-sm text-white line-clamp-1">{link.title || link.url}</p>
+                        <a href={link.url} target="_blank" rel="noreferrer" className="text-xs text-purple-400 hover:underline line-clamp-1">
+                          {link.url}
+                        </a>
+                      </div>
+                      <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase">
+                        Active
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="py-12 text-center text-slate-400 text-sm bg-slate-950 rounded-xl border border-slate-800">
+                  No links added yet. Use the form to add your first link.
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div className='insert-container'>
-            <div className='title'>
-                <input type="text" placeholder='Title'/>
-                <span className='icon-1'><GoPencil /></span>
-
-            </div>
-            <div className='url'>
-                <input type="link" placeholder='url'/>
-                <span className='icon-2'><GoPencil /></span>
-
-            </div>
-            <div className='icons'>
-                <div style={{color:'GrayText'}}className='icons-1'><BsTiktok /><CiImageOn /><RiCalendarScheduleLine /><CiStar /><CiLock /></div>
-                <div style={{color:'GrayText'}} className='icons-2'><GoShare/><MdOutlineDeleteOutline/></div>
-            
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
+      </main>
     </div>
   );
 }
 
-export default DashBoard
+export default DashBoard;
