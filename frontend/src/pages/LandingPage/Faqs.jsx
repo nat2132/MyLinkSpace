@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../components/ui/collapsible'
-import { ChevronDown } from 'lucide-react'
+import { FiChevronDown } from "react-icons/fi";
 
 
 const faqs = [
@@ -58,7 +58,7 @@ export default function Faqs() {
           >
             <CollapsibleTrigger className="w-full h-auto min-h-[4rem] sm:min-h-[5rem] md:min-h-[6rem] lg:min-h-[7rem] bg-white bg-opacity-80 rounded-lg p-3 sm:p-4 md:p-5 flex justify-between items-center text-left hover:bg-opacity-90 transition-colors">
               <span className="font-extrabold pl-2 sm:pl-4 md:pl-6 lg:pl-8 text-base sm:text-lg md:text-xl lg:text-[22px] pr-4">{faq.question}</span>
-              <ChevronDown className={`h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-gray-500 flex-shrink-0 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} />
+              <FiChevronDown className={`h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-gray-500 flex-shrink-0 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} />
             </CollapsibleTrigger>
             <CollapsibleContent className="bg-white bg-opacity-80 mt-1 rounded-lg overflow-hidden transition-all duration-300 ease-in-out">
               <p className="text-gray-700 text-sm sm:text-base md:text-lg lg:text-[21px] font-medium p-3 sm:p-4 md:p-6 lg:p-8 transform transition-all duration-300 ease-in-out">

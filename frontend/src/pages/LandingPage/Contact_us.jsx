@@ -1,7 +1,7 @@
 import { Input } from "../../components/ui/input"
 import { Textarea } from "../../components/ui/textarea"
 import { Button } from "../../components/ui/button"
-import { RocketIcon } from 'lucide-react'
+import { FaRocket } from "react-icons/fa";
 import astronant from "../../assets/astronant.png"
 
 export default function Contact_us() {
@@ -30,7 +30,7 @@ export default function Contact_us() {
             <Input placeholder="Phone Number" className="bg-gray-800 border-gray-700" />
             <Textarea placeholder="Message" className="bg-gray-800 border-gray-700" rows={4} />
             <Button className="w-full bg-purple-600 hover:bg-purple-700 h-14 text-[18px]">
-              Send it to the moon <RocketIcon className="ml-2" />
+              Send it to the moon <FaRocket className="ml-2" />
             </Button>
           </div>
           <div className="w-[600px] h-[600px]">

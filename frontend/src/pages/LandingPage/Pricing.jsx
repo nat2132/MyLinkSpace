@@ -1,7 +1,7 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../components/ui/card"
 import { Button } from "../../components/ui/button"
 import { Badge } from "../../components/ui/badge"
-import { Check, X } from "lucide-react"
+import { FaCheck, FaTimes } from "react-icons/fa";
 import PropTypes from 'prop-types';
 import { GlareCard } from "../../components/ui/glare-card";
 
@@ -60,7 +60,7 @@ export default function Pricing() {
                 <CardFooter className="flex flex-col">
                   <Button className="w-full bg-orange-500 hover:bg-orange-600 h-10 sm:h-12 md:h-15 text-sm sm:text-base md:text-[20px] mt-6 md:mt-10">Get Premium</Button>
                   <p className="text-gray-500 mt-4 flex items-center text-xs sm:text-sm md:text-[17px]">
-                    <Check size={16} className="mr-2" /> Premium users get more visitors
+                    <FaCheck size={16} className="mr-2" /> Premium users get more visitors
                   </p>
                 </CardFooter>
               </Card>
@@ -76,9 +76,9 @@ function FeatureItem({ children, included = false }) {
   return (
     <li className="flex items-center">
       {included ? (
-        <Check className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
+        <FaCheck className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
       ) : (
-        <X className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
+        <FaTimes className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
       )}
       <span className={included ? 'text-gray-900' : 'text-gray-400'}>{children}</span>
     </li>

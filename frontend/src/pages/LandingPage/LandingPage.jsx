@@ -7,8 +7,7 @@ import Hero_2 from "./Hero-2";
 import Layout from "./Layout";
 import Pricing from "./Pricing";
 
-export const LandingPage = () => {
-  return (
+export const LandingPage = () => {  return (
     <Layout>
       <Hero_1 />
       <Hero_2 />
@@ -20,3 +19,5 @@ export const LandingPage = () => {
     </Layout>
   );
 };
+
+export default LandingPage;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import resetImage from '../assets/resetImage.svg';
+import resetImage from '../../assets/resetImage.svg';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.svg';
+import logo from '../../assets/logo.svg';
 
 const PasswordReset = () => {
   const [email, setEmail] = useState('');

@@ -34,7 +34,7 @@ export default function Header() {
             className="text-black text-sm lg:text-[22px] bg-[#EFF0EC] px-3 py-2 lg:p-5 h-10 lg:h-16 w-full lg:w-auto"
             asChild
           >
-            <Link to="/login">Log in</Link>
+            <Link to="/signin">Log in</Link>
           </Button>
           <Button 
             className="bg-[#EB455F] text-sm lg:text-[22px] text-white hover:bg-gray-200 h-10 lg:h-16 rounded-full px-3 py-2 lg:p-5 w-full lg:w-auto"
