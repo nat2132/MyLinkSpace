@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasColumn('users', 'name')) return; // duplicate of the default users-table column
         Schema::table('users', function (Blueprint $table) {
             $table->string('name')->nullable()->after('email');
         });

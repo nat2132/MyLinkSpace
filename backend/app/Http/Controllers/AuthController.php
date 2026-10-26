@@ -34,6 +34,7 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'username' => $request->email, // unique by construction; avoids NULL-username collisions
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

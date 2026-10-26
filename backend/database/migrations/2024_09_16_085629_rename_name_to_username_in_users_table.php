@@ -9,22 +9,24 @@ class RenameNameToUsernameInUsersTable extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * The users table already carries both columns in most installs.
+     * Backfill missing usernames uniquely (suffix with id) instead of
+     * renaming — the table keeps the 'name' column because several app
+     * code paths still write to it.
      */
     public function up(): void
     {
-        if (Schema::hasColumn('users', 'name') && Schema::hasColumn('users', 'username')) {
-            // If both 'name' and 'username' exist, copy data from 'name' to 'username' and drop 'name'
-            DB::statement('UPDATE users SET username = name WHERE username IS NULL');
+        if (!Schema::hasColumn('users', 'username')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->dropColumn('name');
-            });
-        } elseif (Schema::hasColumn('users', 'name') && !Schema::hasColumn('users', 'username')) {
-            // If only 'name' exists, rename it to 'username'
-            Schema::table('users', function (Blueprint $table) {
-                $table->renameColumn('name', 'username');
+                $table->string('username')->nullable();
+                $table->unique('username');
             });
         }
-        // If only 'username' exists, do nothing
+
+        // Unique-safe backfill: suffix with id so duplicate names cannot collide.
+        DB::statement("UPDATE users SET username = name || '-' || id::text WHERE username IS NULL AND name IS NOT NULL");
+        DB::statement("UPDATE users SET username = 'user-' || id::text WHERE username IS NULL");
     }
 
     /**
@@ -32,10 +34,6 @@ class RenameNameToUsernameInUsersTable extends Migration
      */
     public function down(): void
     {
-        if (!Schema::hasColumn('users', 'name') && Schema::hasColumn('users', 'username')) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->renameColumn('username', 'name');
-            });
-        }
+        // Non-destructive backfill; nothing to revert.
     }
 }
