@@ -1,218 +1,451 @@
-import React, { useState } from 'react'
-import Header from '../Header/header'
-import profile from '/src/images/profile.jpg'
-import './appearance.css'
-import { IoAdd } from "react-icons/io5";
-import mobile from '/src/images/mobile.png'
-import { FaUnlock } from "react-icons/fa";
+import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Header from '../Header/header';
+import ProfileRenderer from '../ProfileRenderer';
+import {
+  Avatar,
+  Button,
+  ErrorBanner,
+  Input,
+  Label,
+  Skeleton,
+  Textarea,
+  Toggle,
+  useToast,
+} from '../ui/kit';
+import {
+  applyCustomTheme,
+  createCustomTheme,
+  getCustomThemePreview,
+  getLinks,
+  getProfiles,
+  getStoredUser,
+  getStoredUserId,
+  updateProfile,
+} from '../../lib/api';
 
+const FONT_OPTIONS = [
+  { value: 'system', label: 'System — crisp, neutral', css: '' },
+  { value: 'Georgia', label: 'Georgia — editorial serif', css: 'Georgia' },
+  { value: '"Courier New"', label: 'Mono — terminal mood', css: '"Courier New"' },
+  { value: 'Verdana', label: 'Verdana — sturdy sans', css: 'Verdana' },
+  { value: '"Palatino Linotype"', label: 'Palatino — classic', css: '"Palatino Linotype"' },
+  { value: '"Trebuchet MS"', label: 'Trebuchet — friendly', css: '"Trebuchet MS"' },
+];
 
+// Hand-picked, non-generic starting points (deep charcoal + accents that
+// avoid the default purple/pink AI gradient slather).
+const PRESETS = [
+  { name: 'Carbon', background_color: '#0d0f13', text_color: '#f3f5f8', button_color: '#b6f24c', button_text_color: '#0a0c10' },
+  { name: 'Slate', background_color: '#151a21', text_color: '#d9dee6', button_color: '#e4e8ee', button_text_color: '#101318' },
+  { name: 'Moss', background_color: '#101408', text_color: '#e5f0d8', button_color: '#88c05a', button_text_color: '#101408' },
+  { name: 'Ember', background_color: '#160e0a', text_color: '#f5e9de', button_color: '#e8672c', button_text_color: '#160e0a' },
+  { name: 'Glacier', background_color: '#081218', text_color: '#dfeef2', button_color: '#59c4d6', button_text_color: '#081218' },
+];
 
-function appearance() {
-    const[color,setColor]=useState("")
-    function handleChange(e){
-        setColor(e.target.value)
-    }
+const FALLBACK_THEME = {
+  background_color: '#0d0f13',
+  text_color: '#f3f5f8',
+  button_color: '#b6f24c',
+  button_text_color: '#0a0c10',
+  font_family: 'system',
+};
+
+function ColorField({ label, value, onChange }) {
   return (
-    <div>
-        <Header/>
-        <div style={{padding:'10px',borderRadius:'20px',backgroundColor:'#FFE2E5',marginLeft:'10px',marginTop:'80px'}}>To publish your profile please verify your account by clicking the link we’ve sent to your email (rajarshibashyas08@gmail.com).<span style={{color:'red'}}>Resend Verification Link</span></div>
-        <div className='profile-container'>
-            <div className='profile'>
-            <img style={{height:'70px',width:'70px',borderRadius:'50px'}} src={profile} alt="" />
-            <div className='btn'>
-                <button style={{marginBottom:'5px',backgroundColor:'#8129D9',color:'white',padding:'7px',borderRadius:'30px',width:'500px'}}>Pick An Image</button><br />
-                <button style={{border:'1px,solid',color:'grey',padding:'7px',borderRadius:'30px',width:'500px'}}>Remove</button>
-
-            </div>
-            </div>
-            <div>
-                <input style={{width:'650px',padding:'10px',borderRadius:'20px',background:'#F6F7F5',marginTop:'10px'}} type="text" placeholder='profile title' /><br />
-                <input style={{width:'650px',padding:'10px',borderRadius:'20px',height:'100px',background:'#F6F7F5',marginTop:'10px',marginBottom:'20px'}} type="text" placeholder='Bio' />
-                <hr />
-            </div>
-            <div>
-                <button style={{display:'flex',alignItems:'center', color:'#8129D9'}}><IoAdd/>Add Social Icons</button>
-            </div>
-
-        </div>
-        <div>
-            <img style={{marginTop:'-360px',marginLeft:'1000px'}} src={mobile} alt="" />
-        </div>
-        <h2 style={{marginLeft:'60px',fontWeight:'bolder',fontSize:'25px'}}>Themes</h2>
-
-        <div className='themes-container'>
-        <div style={{    backgroundColor: '#39E09B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div className='in'style={{display:'block',marginTop:'100px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>lightgreen</div>
-        </div>
-        <div style={{backgroundColor:'rgb(227, 5, 239)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div className='in'style={{marginTop:'100px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>pink</div>
-        </div>
-        <div style={{backgroundColor:'rgb(125, 124, 124)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div className='in'style={{display:'block',marginTop:'100px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>grey</div>
-        </div>
-        <div style={{backgroundColor:'rgb(7, 187, 232)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div className='in'style={{display:'block',marginTop:'100px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>lightblue</div>
-        </div>
-        
-        <div style={{background:'linear-gradient(#cbc9c9, #7ab3f5, #FFC300)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-        <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'150px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'10px'}}>Upgrade<FaUnlock/></button>
-            <div className='in'style={{display:'block',marginTop:'55px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>breeze orange</div>
-        </div>
-        <div style={{background:'linear-gradient(135deg, #FF5733, #33FF57, #3357FF)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-        <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'150px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'10px'}}>Upgrade<FaUnlock/></button>
-            <div className='in'style={{display:'block',marginTop:'55px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>rainbow</div>
-        </div>
-        <div style={{background: 'linear-gradient(135deg, #ffffff, #f80637, #FFC300)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-        <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'150px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'10px'}}>Upgrade<FaUnlock/></button>
-            <div className='in'style={{display:'block',marginTop:'55px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>spicy</div>
-        </div>
-        <div style={{backgroundColor:'rgb(14, 11, 51)',display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-
-            <div className='in'style={{display:'block',marginTop:'100px',width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{width:'150px',borderRadius:'50px',backgroundColor:'white'}}>.</div>
-            <div style={{marginTop:'60px'}}>night</div>
-        </div>
-
-
-
-        </div>
-        <div style={{marginLeft:'60px',marginTop:'30px'}}>
-        <h2 style={{fontWeight:'bolder',fontSize:'25px'}}>Custom appearance</h2>
-        <p>Completely customize your Linktree profile. Change your background with colors,<br /> gradients and images. Choose a button style, change the typeface and more.</p>
-        <h2 style={{marginTop:'30px',fontWeight:'bolder',fontSize:'25px'}}>Backgrounds </h2><br/>
-
-        </div>
-        <div className='background'>
-        <div style={{    backgroundColor: 'rgb(75, 73, 73)', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div style={{marginTop:'265px'}}>grey</div>
-        </div>
-        <div style={{    backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-            <div style={{marginTop:'265px'}}>vintage</div>
-        </div>
-        <div style={{ background: 'linear-gradient(135deg,rgb(63, 62, 62),rgb(247, 243, 243))',   backgroundColor: 'rgba(147, 143, 143, 0.995)', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item">
-        <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'150px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'10px'}}>Upgrade<FaUnlock/></button>
-            <div style={{marginTop:'220px'}}>blured grey</div>
-        </div>
-        <div style={{marginTop:'350px',marginLeft:'-700px'}}>
-            <h2>Color</h2>
-            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' value={color} onChange={handleChange} />
-        </div>
-
-
-        </div>
-        <h2 style={{marginTop:'30px',fontWeight:'bolder',fontSize:'25px',marginLeft:'45px'}}>Buttons </h2><br/>
-        <div className='buttons'>
-        <div style={{marginTop:'30px', marginLeft:'80px',   backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-160px'}}>Fill</h2>
-        </div>
-
-
-            <div style={{ marginTop:'30px',   borderRadius:'10px', marginLeft:'80px',     backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-        <div style={{marginTop:'30px', borderRadius:'30px',marginLeft:'80px',     backgroundColor: '#3D444B', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-        <div style={{marginTop:'50px', marginLeft:'80px',   backgroundColor: '',border:'2px solid black',      display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-130px'}}>Outline</h2>
-        </div>
-
-
-            <div style={{ marginTop:'50px',   borderRadius:'10px', marginLeft:'80px',border:'2px solid black',     backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-        <div style={{marginTop:'50px', borderRadius:'30px',marginLeft:'80px', border:'2px solid black',         backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-        <div style={{marginTop:'50px', marginLeft:'80px',   backgroundColor: '',border: '4px inset #000',     display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-            <h2 style={{color:'black',marginTop:'-40px',marginLeft:'-130px'}}>Special</h2>
-            <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'-35px',marginLeft:'40px'}}>Upgrade<FaUnlock/></button>
-        </div>
-
-
-            <div style={{ marginTop:'50px',   borderRadius:'10px', marginLeft:'80px',border:'4px inset #000',     backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-        <div style={{marginTop:'50px', borderRadius:'30px',marginLeft:'80px', border:'4px inset black',         backgroundColor: '', display:'flex',flexDirection:'column',alignItems:'center',gap:'0.5rem',position:'relative'}}class="grid-item1">
-        </div>
-
-
-
-
-        <div style={{marginTop:'50px',marginLeft:'80px'}}>
-            <h2>button Color</h2>
-            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' value={color} onChange={handleChange} />
-        </div>
-
-
-
-
-
-
-
-
-
-        </div>
-
-        <h2 style={{marginTop:'40px',fontWeight:'bolder',fontSize:'25px',marginLeft:'45px'}}>Fonts </h2><br/>
-        <div className='fonts' style={{display:'flex',flexDirection:'column',gap:'10px'}}>
-            <h2 style={{color:'black',marginTop:'',marginLeft:''}}>Font</h2>
-            
-            <select style={{border:'2px grey solid',borderRadius:'20px',padding:'10px',width:'600px'}} id="fontSelect">
-            <option value="Arial">Arial</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Georgia">Georgia</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Verdana">Verdana</option>
-        </select>
-        <div style={{marginTop:'20px',marginLeft:''}}>
-            <h2>Font Color</h2>
-            <input style={{border:'none',borderRadius:'30px',width:'50px',height:'50px'}}type="color" placeholder='color' value={color} onChange={handleChange} />
-        </div>
-            
-
-
-
-        </div>
-
-        <div className='mylinkspacelogo'>
-            <h2>Hide the MyLinkSpace</h2>
-            <button style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100px',borderRadius:'50px',backgroundColor:'black',gap:'2px',marginTop:'-35px',marginLeft:'40px',color:'white'}}>Upgrade<FaUnlock/></button>
-
-
-
-        </div>
-
-
-
-
-
-      
+    <div className="flex items-center gap-3 rounded-xl border border-line bg-ink-800 p-2.5">
+      <input
+        type="color"
+        aria-label={label}
+        value={/^#[0-9a-fA-F]{6}$/.test(value) ? value : '#000000'}
+        onChange={(e) => onChange(e.target.value)}
+        className="h-8 w-8 shrink-0 cursor-pointer rounded-lg border border-line-strong bg-transparent"
+      />
+      <div className="min-w-0 flex-1">
+        <p className="text-[12px] font-medium text-mist-100">{label}</p>
+        <input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          spellCheck="false"
+          className="w-full bg-transparent font-mono text-[11px] text-mist-500 outline-none"
+        />
+      </div>
     </div>
-  )
+  );
 }
 
-export default appearance
+function Appearance() {
+  const navigate = useNavigate();
+  const toast = useToast();
+  const userId = useMemo(() => getStoredUserId(), []);
+  const user = useMemo(() => getStoredUser(), []);
+
+  const [profile, setProfile] = useState(null);
+  const [links, setLinks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Profile fields
+  const [form, setForm] = useState({ title: '', bio: '', avatar_url: '', is_public: true });
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [profileError, setProfileError] = useState('');
+
+  // Theme fields
+  const [theme, setTheme] = useState(FALLBACK_THEME);
+  const [themeId, setThemeId] = useState(null);
+  const [savingTheme, setSavingTheme] = useState(false);
+
+  useEffect(() => {
+    if (!userId) {
+      navigate('/signin', { replace: true });
+      return;
+    }
+    (async () => {
+      setLoading(true);
+      const [{ data: profiles }, { data: linkList }] = await Promise.all([
+        getProfiles(userId),
+        getLinks(userId),
+      ]);
+      const p = Array.isArray(profiles) ? profiles[0] : null;
+      setProfile(p);
+      const sorted = (linkList || []).slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).filter((l) => l.is_active !== false);
+      setLinks(sorted);
+      if (p) {
+        setForm({
+          title: p.title === 'Default Title' ? '' : p.title || '',
+          bio: p.bio === 'Default Bio' ? '' : p.bio || '',
+          avatar_url: p.avatar_url || '',
+          is_public: p.is_public !== false,
+        });
+        if (p.custom_theme_id) {
+          setThemeId(p.custom_theme_id);
+          const { data: preview } = await getCustomThemePreview(p.custom_theme_id);
+          if (preview) {
+            setTheme({
+              background_color: preview.background_color || FALLBACK_THEME.background_color,
+              text_color: preview.text_color || FALLBACK_THEME.text_color,
+              button_color: preview.button_color || FALLBACK_THEME.button_color,
+              button_text_color: preview.button_text_color || FALLBACK_THEME.button_text_color,
+              font_family: preview.font_family || 'system',
+            });
+          }
+        }
+      }
+      setLoading(false);
+    })();
+  }, [userId, navigate]);
+
+  if (!loading && !profile) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main className="mx-auto max-w-[42rem] px-4 pt-16 text-center sm:px-6">
+          <ErrorBanner message="We couldn't find a profile for your account. Try again shortly." />
+        </main>
+      </div>
+    );
+  }
+
+  const saveProfile = async (e) => {
+    e.preventDefault();
+    setProfileError('');
+    const payload = {
+      title: form.title.trim() || null,
+      bio: form.bio.trim() === '' ? null : form.bio.trim(),
+      avatar_url: form.avatar_url.trim() === '' ? null : form.avatar_url.trim(),
+      is_public: form.is_public,
+    };
+    if (payload.avatar_url && !/^https?:\/\//i.test(payload.avatar_url)) {
+      setProfileError('The avatar must be a full URL starting with http(s)://');
+      return;
+    }
+    setSavingProfile(true);
+    const { error } = await updateProfile(profile.id, payload);
+    setSavingProfile(false);
+    if (error) {
+      setProfileError(error);
+      return;
+    }
+    setProfile((p) => ({ ...p, ...payload }));
+    toast('Profile saved');
+  };
+
+  const applyTheme = async (source) => {
+    setSavingTheme(true);
+    try {
+      const payload = {
+        name: source.name || `Theme ${new Date().toLocaleDateString()}`,
+        background_color: source.background_color,
+        text_color: source.text_color,
+        button_color: source.button_color,
+        button_text_color: source.button_text_color,
+        font_family: source.font_family,
+      };
+      const { data: created, error: createError } = await createCustomTheme(payload);
+      if (createError) {
+        toast(createError, 'error');
+        return;
+      }
+      const applied = await applyCustomTheme(created.id);
+      if (applied.error) {
+        toast(applied.error, 'error');
+        return;
+      }
+      setThemeId(created.id);
+      setTheme({ ...source });
+      toast('Theme applied — your page is wearing it now');
+    } finally {
+      setSavingTheme(false);
+    }
+  };
+
+  const publicUrl = profile?.id ? `${window.location.origin}/p/${profile.id}` : null;
+
+  const previewTheme = {
+    background_color: theme.background_color,
+    text_color: theme.text_color,
+    button_color: theme.button_color,
+    button_text_color: theme.button_text_color,
+    font_family: FONT_OPTIONS.find((f) => f.value === theme.font_family)?.css || theme.font_family,
+  };
+
+  const previewProfile = {
+    ...profile,
+    title: form.title || profile?.title,
+    bio: form.bio || profile?.bio,
+    avatar_url: form.avatar_url || profile?.avatar_url,
+  };
+
+  return (
+    <div className="min-h-screen pb-20">
+      <Header />
+      <main className="page-enter mx-auto max-w-shell px-4 pt-8 sm:px-6 sm:pt-10">
+        <div className="mb-8">
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-mist-500">Appearance</p>
+          <h1 className="mt-1 text-2xl font-bold tracking-tight">Design your page</h1>
+          <p className="mt-1.5 text-[13px] text-mist-500">
+            Text, avatar, visibility and theme. The preview updates as you type.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.25fr_1fr]">
+          {/* Left column: editors */}
+          <div className="space-y-8">
+            {/* Profile editor */}
+            <section className="rounded-2xl border border-line bg-ink-850 p-5 shadow-card sm:p-6">
+              <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.18em] text-mist-500">Profile</p>
+              {loading ? (
+                <div className="space-y-4">
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-24 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              ) : (
+                <form onSubmit={saveProfile} className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <Avatar src={form.avatar_url || profile?.avatar_url} name={form.title || user?.name || 'U'} size={56} />
+                    <div className="min-w-0 flex-1">
+                      <Label htmlFor="avatar-url" hint="Falls back to your initial if the image fails">
+                        Avatar image URL
+                      </Label>
+                      <Input
+                        id="avatar-url"
+                        type="url"
+                        value={form.avatar_url}
+                        placeholder="https://…/me.jpg"
+                        onChange={(e) => setForm({ ...form, avatar_url: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="title">Display title</Label>
+                    <Input
+                      id="title"
+                      maxLength={120}
+                      value={form.title}
+                      placeholder="Natoli — maker on the internet"
+                      onChange={(e) => setForm({ ...form, title: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="bio" hint={`${form.bio.length}/1000`}>
+                      Bio
+                    </Label>
+                    <Textarea
+                      id="bio"
+                      maxLength={1000}
+                      rows={3}
+                      value={form.bio}
+                      placeholder="One or two lines about what people will find behind these links."
+                      onChange={(e) => setForm({ ...form, bio: e.target.value })}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between rounded-xl border border-line bg-ink-800 px-4 py-3">
+                    <div>
+                      <p className="text-sm font-medium text-mist-100">Public page</p>
+                      <p className="text-xs text-mist-500">
+                        {form.is_public ? 'Anyone with your link can view it.' : 'Visitors will be told the page is private.'}
+                      </p>
+                    </div>
+                    <Toggle
+                      checked={form.is_public}
+                      onChange={(v) => setForm({ ...form, is_public: v })}
+                      label="Toggle public page"
+                    />
+                  </div>
+                  {profileError && <ErrorBanner message={profileError} />}
+                  <div className="flex justify-end pt-1">
+                    <Button type="submit" size="md" disabled={savingProfile}>
+                      {savingProfile ? 'Saving…' : 'Save profile'}
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </section>
+
+            {/* Theme builder */}
+            <section className="rounded-2xl border border-line bg-ink-850 p-5 shadow-card sm:p-6">
+              <div className="mb-5 flex items-center justify-between">
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-mist-500">Theme</p>
+                {themeId && (
+                  <span className="rounded-full bg-ion-dim px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-ion">
+                    Applied #{themeId}
+                  </span>
+                )}
+              </div>
+
+              <p className="mb-2.5 text-[13px] font-medium text-mist-100">Starting points</p>
+              <div className="mb-6 grid grid-cols-2 gap-2.5 sm:grid-cols-5">
+                {PRESETS.map((preset) => {
+                  const selected =
+                    preset.background_color === theme.background_color &&
+                    preset.button_color === theme.button_color;
+                  return (
+                    <button
+                      key={preset.name}
+                      type="button"
+                      onClick={() => setTheme((t) => ({ ...preset, font_family: t.font_family }))}
+                      className={`group overflow-hidden rounded-xl border transition-all duration-150 ${
+                        selected ? 'border-ion glare' : 'border-line hover:border-line-strong'
+                      }`}
+                      title={`${preset.name} theme`}
+                    >
+                      <div className="h-14 w-full" style={{ background: preset.background_color }}>
+                        <div className="flex h-full flex-col items-center justify-center gap-1 pt-4">
+                          <span className="block h-1.5 w-3/4 rounded-full" style={{ background: preset.text_color, opacity: 0.85 }} />
+                          <span className="block h-1.5 w-2/3 rounded-full" style={{ background: preset.text_color, opacity: 0.4 }} />
+                        </div>
+                      </div>
+                      <div className="bg-ink-800 px-2 py-1.5">
+                        <span className="block truncate rounded-full py-1 text-center text-[11px] font-semibold" style={{ backgroundColor: preset.button_color, color: preset.button_text_color }}>
+                          Link
+                        </span>
+                      </div>
+                      <p className="bg-ink-800 border-t border-line py-1.5 text-center text-[10px] text-mist-500">{preset.name}</p>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <p className="mb-2.5 text-[13px] font-medium text-mist-100">Fine tuning</p>
+              <div className="grid gap-2.5 sm:grid-cols-2">
+                <ColorField label="Background" value={theme.background_color} onChange={(v) => setTheme({ ...theme, background_color: v })} />
+                <ColorField label="Text" value={theme.text_color} onChange={(v) => setTheme({ ...theme, text_color: v })} />
+                <ColorField label="Link button" value={theme.button_color} onChange={(v) => setTheme({ ...theme, button_color: v })} />
+                <ColorField label="Link button text" value={theme.button_text_color} onChange={(v) => setTheme({ ...theme, button_text_color: v })} />
+              </div>
+
+              <div className="mt-4">
+                <p className="mb-1.5 text-[13px] font-medium text-mist-100">Typeface</p>
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                  {FONT_OPTIONS.map((f) => (
+                    <button
+                      key={f.value}
+                      type="button"
+                      onClick={() => setTheme({ ...theme, font_family: f.value })}
+                      className={`rounded-lg border px-3 py-2 text-left text-[12.5px] transition-colors ${
+                        theme.font_family === f.value
+                          ? 'border-ion/60 bg-ion-dim text-ion'
+                          : 'border-line bg-ink-800 text-mist-300 hover:border-line-strong'
+                      }`}
+                    >
+                      <span className="block truncate" style={f.css ? { fontFamily: f.css } : undefined}>
+                        {f.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-5 flex justify-end">
+                <Button size="md" onClick={() => applyTheme(theme)} disabled={savingTheme}>
+                  {savingTheme ? 'Applying…' : themeId ? 'Save & reapply theme' : 'Apply theme to my page'}
+                </Button>
+              </div>
+            </section>
+          </div>
+
+          {/* Right column: live preview */}
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-mist-500">Live preview</p>
+            <div className="mx-auto w-full max-w-[320px] overflow-hidden rounded-[2rem] border border-line-strong bg-ink-900 shadow-pop">
+              <div className="flex h-[560px] overflow-y-auto">
+                <ProfileRenderer
+                  profile={previewProfile}
+                  links={links}
+                  theme={previewTheme}
+                  standalone={false}
+                />
+              </div>
+            </div>
+
+            {publicUrl && (
+              <div className="mx-auto mt-4 w-full max-w-[320px] rounded-xl border border-line bg-ink-850 p-3.5">
+                <p className="mb-2 text-[11px] text-mist-500">Public address</p>
+                <div className="flex items-center gap-2">
+                  <code className="min-w-0 flex-1 truncate rounded-lg bg-ink-800 px-2.5 py-2 font-mono text-[11px] text-mist-100">
+                    {publicUrl}
+                  </code>
+                  <div className="flex gap-1.5">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="!px-2"
+                      title="Copy"
+                      onClick={async () => {
+                        try {
+                          await navigator.clipboard.writeText(publicUrl);
+                          toast('Public link copied');
+                        } catch {
+                          toast('Copy failed', 'error');
+                        }
+                      }}
+                    >
+                      <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.4">
+                        <rect x="5.5" y="5.5" width="8" height="8" rx="2" />
+                        <path d="M10.5 5.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2" strokeLinecap="round" />
+                      </svg>
+                    </Button>
+                    <a
+                      href={`/p/${profile.id}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex h-8 items-center justify-center rounded-lg border border-line-strong bg-ink-600/60 px-2.5 text-xs font-medium text-mist-50 transition-colors hover:bg-ink-600"
+                      title="Open public page"
+                    >
+                      <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.4">
+                        <path d="M6.5 9.5 11 5M6.9 5H11v4.1" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M12.5 9.5v3a1.5 1.5 0 0 1-1.5 1.5H4a1.5 1.5 0 0 1-1.5-1.5V5A1.5 1.5 0 0 1 4 3.5h3" strokeLinecap="round" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export default Appearance;

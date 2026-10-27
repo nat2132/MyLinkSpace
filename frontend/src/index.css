@@ -2,4 +2,104 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------ */
+/* MyLinkSpace design tokens — deep charcoal + electric lime           */
+/* ------------------------------------------------------------------ */
+:root {
+  --mls-bg: #060709;
+  --mls-surface: #0f1217;
+  --mls-elevated: #14181e;
+  --mls-line: #21262e;
+  --mls-text: #f3f5f8;
+  --mls-muted: #9ba5b2;
+  --mls-accent: #b6f24c;
+  --mls-accent-ink: #0a0c10;
+}
 
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-ink-950 text-mist-50 font-sans antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(182, 242, 76, 0.28);
+  color: #f3f5f8;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2e3540 transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #2e3540;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Accessible focus ring everywhere */
+:focus-visible {
+  outline: 2px solid rgba(182, 242, 76, 0.7);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Small motif: fine dotted grid used sparingly on hero / public shells */
+.mls-dotgrid {
+  background-image: radial-gradient(rgba(243, 245, 248, 0.07) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+.mls-hairline {
+  background: linear-gradient(90deg, transparent, rgba(243, 245, 248, 0.14), transparent);
+}
+
+/* Skeleton shimmer used by loading states */
+.mls-skeleton {
+  @apply rounded-lg bg-ink-700;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 400px 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+/* Page transition */
+.page-enter {
+  animation: fadeUp 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter,
+  .animate-fade-up {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
