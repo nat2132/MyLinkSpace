@@ -11,6 +11,10 @@ class LinkClick extends Model
 {
     use HasFactory;
 
+    // The link_clicks table records clicked_at (with a DEFAULT timestamp)
+    // and has no created_at/updated_at columns.
+    public $timestamps = false;
+
     protected $fillable = [
         'link_id',
         'ip_address',
