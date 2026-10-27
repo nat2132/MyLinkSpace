@@ -184,8 +184,10 @@ class User extends Authenticatable
     protected static function booted()
 {
     static::created(function ($user) {
+        $defaultTheme = \App\Models\Theme::firstOrCreate(['name' => 'Default Theme']);
+
         $user->profile()->create([
-            // You can set default values for the profile here if needed
+            'theme_id' => $defaultTheme->id, // profiles.theme_id defaults to 1; the seeded theme may not have id 1
             'title' => 'Default Title',
             'bio' => 'Default Bio',
             'avatar_url' => 'https://example.com/default-avatar.png',

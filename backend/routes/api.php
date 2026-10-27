@@ -68,36 +68,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-// TEMPORARY probe for issue triage — remove after verification.
-Route::get('/probe-theme', function () {
-    try {
-        $t = \App\Models\Theme::firstOrCreate(['name' => 'Default Theme']);
-        return response()->json([
-            'id' => $t->id,
-            'exists' => $t->exists,
-            'count' => \App\Models\Theme::count(),
-            'connection_search_path' => \Illuminate\Support\Facades\DB::select('select current_schemas(true) as sp')[0]->sp,
-        ]);
-    } catch (\Throwable $e) {
-        return response()->json(['error' => $e->getMessage(), 'class' => get_class($e)], 500);
-    }
-});
-
-// TEMPORARY: dump the deployed Profile model's assignment config.
-Route::get('/probe-code', function () {
-    $m = new \App\Models\Profile();
-    $lines = file(app_path('Models/Profile.php'), FILE_IGNORE_NEW_LINES);
-    return response()->json([
-        'class' => get_class($m),
-        'table' => $m->getTable(),
-        'fillable' => $m->getFillable(),
-        'casts' => $m->getCasts(),
-        'profile_head_lines_10_30' => array_values(array_filter(array_map(function ($i, $l) {
-            return ($i >= 10 && $i <= 30) ? (($i + 1) . ': ' . rtrim($l)) : null;
-        }, array_keys($lines), $lines))),
-    ]);
-});
-
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);

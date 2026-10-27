@@ -39,16 +39,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $defaultTheme = Theme::firstOrCreate(['name' => 'Default Theme']);
-
-        $profile = Profile::create([
-            'user_id' => $user->id,
-            'theme_id' => $defaultTheme->id,
-            'title' => 'Default Title',
-            'bio' => 'Default Bio',
-            'avatar_url' => 'https://example.com/default-avatar.png',
-            'is_public' => true,
-        ]);
+        // The User::created observer creates the profile (with the default
+        // theme); do not create a second profile here.
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
