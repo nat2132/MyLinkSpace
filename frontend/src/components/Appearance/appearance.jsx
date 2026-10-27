@@ -182,12 +182,23 @@ function Appearance() {
       };
       const { data: created, error: createError } = await createCustomTheme(payload);
       if (createError) {
-        toast(createError, 'error');
+        const is500 = /status code 500/i.test(createError) || /server/i.test(createError);
+        toast(
+          is500
+            ? 'The server could not save this theme yet (500). Your colors stay applied to the preview — a backend fix is in progress.'
+            : createError,
+          'error',
+        );
         return;
       }
       const applied = await applyCustomTheme(created.id);
       if (applied.error) {
-        toast(applied.error, 'error');
+        toast(
+          /status code 500/.test(applied.error)
+            ? 'Saved the theme but applying it failed — the backend may need that fix deployed.'
+            : applied.error,
+          'error',
+        );
         return;
       }
       setThemeId(created.id);
