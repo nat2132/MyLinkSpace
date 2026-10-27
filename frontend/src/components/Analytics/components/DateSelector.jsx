@@ -7,7 +7,7 @@ export default function DateSelector() {
 
     return(
         <div className="DateSelector">
-        <div className="flex h-[48px] bg-white items-center gap-5 p-5 rounded-[8px]">
+        <div className="flex h-[48px] bg-ink-850 items-center gap-5 p-5 rounded-[8px]">
           <label htmlFor="date">
             {" "}
             <img

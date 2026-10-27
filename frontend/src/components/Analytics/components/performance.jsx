@@ -44,7 +44,7 @@ export default function Performance() {
       <CardWraper>
         <div className="w-full h-full bg-[#676B5F] inset-0 rounded-[8px] bg-opacity-[2%] absolute"></div>
 
-        <div className="text-sm text-[#2b3035] flex gap-2">
+        <div className="text-sm text-mist-300 flex gap-2">
           <span className=" font-semibold">Clicks</span>{" "}
           <span className=" border-r border-gray-400"> </span>
           <span>chart</span>
@@ -66,10 +66,10 @@ export default function Performance() {
                     className="w-2 h-2 rounded-full"
                     style={{ background: p.color }}
                   ></div>
-                  <h1 className="text-[#212529] text-sm md:text-[14px]">
+                  <h1 className="text-mist-100 text-sm md:text-[14px]">
                     {p.name}
                   </h1>
-                  <h2 className="md:text-[14px]  text-sm font-semibold text-[#212529]">
+                  <h2 className="md:text-[14px]  text-sm font-semibold text-mist-100">
                     {p.clicks}
                   </h2>
                 </div>
@@ -80,7 +80,7 @@ export default function Performance() {
             <Doughnut data={pieData} />
           </div>
         </div>
-        <div className="text-xs text-[#2b3035] flex gap-2">
+        <div className="text-xs text-mist-300 flex gap-2">
           <span className="">Doughnut Chart</span>{" "}
         </div>
 

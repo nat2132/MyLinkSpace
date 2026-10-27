@@ -28,9 +28,9 @@ function AnalyticsSummary() {
 
   return (
     <div className="AnalyticSummary px-[16px] mt-2">
-      <div className=" bg-white stroke-[#D8D8D8] w-full rounded-[24px] p-3 grid place-items-center">
+      <div className=" bg-ink-850 border border-line w-full rounded-[24px] p-3 grid place-items-center">
         <div className="">
-          <h1 className=" font-semibold text-[#212529] text-[20px] mb-5">
+          <h1 className=" font-semibold text-mist-100 text-[20px] mb-5">
             Lifetime Analytics
           </h1>
         </div>

@@ -11,7 +11,7 @@ export default function BarchartHolder() {
           free
         </span>
       </div>
-      <div className=" w-full h-auto bg-white rounded-[8px] mt-5">
+      <div className=" w-full h-auto bg-ink-850 rounded-[8px] mt-5">
         <BarChart />
       </div>
     </div>

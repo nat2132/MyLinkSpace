@@ -1,4 +1,4 @@
-
-.analytics{
-    background-color: #f3f3f1;
+.analytics {
+  @apply min-h-screen pb-20;
+  padding-top: 100px;
 }

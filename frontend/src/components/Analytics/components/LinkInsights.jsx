@@ -56,8 +56,8 @@ export default function LinkInsights() {
               key={linkData.link}
               className="border-b  flex justify-between py-2 border-[#D7DCE1]"
             >
-              <h1 className="text-[#212529] text-[14px]">{linkData.link_id}</h1>
-              <h2 className="text-[14px] font-semibold text-[#212529]">
+              <h1 className="text-mist-100 text-[14px]">{linkData.link_id}</h1>
+              <h2 className="text-[14px] font-semibold text-mist-100">
                 {linkData.total_clicks}
               </h2>
             </div>
@@ -89,8 +89,8 @@ export default function LinkInsights() {
               key={linkData.link}
               className="border-b  flex justify-between py-2 border-[#D7DCE1]"
             >
-              <h1 className="text-[#212529] text-[14px]">{linkData.link_id}</h1>
-              <h2 className="text-[14px] font-semibold text-[#212529]">
+              <h1 className="text-mist-100 text-[14px]">{linkData.link_id}</h1>
+              <h2 className="text-[14px] font-semibold text-mist-100">
                 {linkData.total_clicks}
               </h2>
             </div>

@@ -42,7 +42,7 @@ function Analytics() {
           <DateSelector />
           <div className="activity">
             <SectionHeaderText>Analytics</SectionHeaderText>
-            <div className="lg:px-10 grid place-items-center bg-white rounded-[8px] h-[245px] mt-5">
+            <div className="lg:px-10 grid place-items-center bg-ink-850 rounded-[8px] h-[245px] mt-5">
               <div className="grid place-items-center p-5 gap-3">
                 <img src={noDataIcon} alt="Icon" />
                 <h1 className="text-[16px] font-semibold">No activity data</h1>

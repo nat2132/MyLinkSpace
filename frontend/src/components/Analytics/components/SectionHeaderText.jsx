@@ -5,7 +5,7 @@ function SectionHeaderText(text) {
 
   return (
     <>
-      <div className="flex items-center gap-1 font-semibold text-[#212529] text-[16px] md:text-[20px]">
+      <div className="flex items-center gap-1 font-semibold text-mist-100 text-[16px] md:text-[20px]">
         {headText} <span> <img src={infoIcon} alt="info" /></span>
       </div>
     </>

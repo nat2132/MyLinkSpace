@@ -138,7 +138,7 @@ function DashBoard() {
                 className="group flex h-10 min-w-0 items-center gap-2.5 rounded-xl border border-line bg-ink-850 px-3.5 text-left transition-colors hover:border-line-strong"
                 title="Copy your public page URL"
               >
-                <svg viewBox="0 0 16 16" className="h-4 w-4 shrink-0 stroke-mist-500 group-hover:stroke-ion dark" fill="none" strokeWidth="1.5">
+                <svg viewBox="0 0 16 16" className="h-4 w-4 shrink-0 stroke-mist-500 group-hover:stroke-ion" fill="none" strokeWidth="1.5">
                   <path d="M6.5 9.5A3 3 0 0 1 6.5 4.5L8 3a3 3 0 0 1 4.2 4.2L11.4 8" strokeLinecap="round" />
                   <path d="M9.5 6.5A3 3 0 0 1 9.5 11.5L8 13a3 3 0 0 1-4.2-4.2L4.6 8" strokeLinecap="round" />
                 </svg>
