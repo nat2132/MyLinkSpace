@@ -73,11 +73,15 @@ class LinkController extends Controller
                 'user_agent' => 'string|nullable',
             ]);
 
-            LinkClick::create([
-                'user_id' => $userId,
-                'link_id' => $linkId,
-                'user_agent' => $validated['user_agent'] ?? $request->header('User-Agent'),
-            ]);
+        // ip_address and clicked_at are NOT NULL without defaults in
+        // link_clicks; populate them explicitly so the insert never fails.
+        LinkClick::create([
+            'user_id' => $userId,
+            'link_id' => $linkId,
+            'ip_address' => $request->ip() ?? '0.0.0.0',
+            'user_agent' => $validated['user_agent'] ?? $request->header('User-Agent'),
+            'clicked_at' => now(),
+        ]);
 
         // Increment the clicks in the links table
         $link = Link::findOrFail($linkId);
