@@ -30,11 +30,12 @@ use App\Http\Controllers\PaymentController;
 Route::prefix('users/{userId}/links')->group(function () {
     Route::get('/', [LinkController::class, 'index']);
     Route::post('/', [LinkController::class, 'store']);
+    // Static segments must be registered before the parameterised {id} routes,
+    // otherwise Laravel matches PUT /users/{id}/links/reorder as {id} = "reorder".
+    Route::put('/reorder', [LinkController::class, 'reorder']);
     Route::get('/{id}', [LinkController::class, 'show']);
     Route::put('/{id}', [LinkController::class, 'update']);
     Route::delete('/{id}', [LinkController::class, 'destroy']);
-    Route::put('/reorder', [LinkController::class, 'reorder']);
-
 });
 
 
